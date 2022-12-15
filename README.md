@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/dm/@flzyy%2Fcreate-discord-bot.svg)](https://www.npmjs.com/package/@flzyy/create-discord-bot)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/flzyy/create-discord-bot/issues)
 
-CLI tool to bootstrap your discord bot with
+CLI tool to bootstrap your discord.js bot with
 [Typescript](https://www.npmjs.com/package/typescript) or just default Javascript.
 
 ## Features:
