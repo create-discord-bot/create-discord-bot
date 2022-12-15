@@ -26,12 +26,12 @@ const questions = [
         }
     },
     {
-        message: "Enable ESLint:",
+        message: "Do you want to enable ESLint:",
         type: "confirm",
         name: "eslint"
     },
     {
-        message: "Enable Prettier:",
+        message: "Do you want to nable Prettier:",
         type: "confirm",
         name: "prettier"
     }
@@ -54,6 +54,17 @@ inquirer
                     force: true
                 }
             );
+
+            if (answers.eslint === true) {
+                await downloadTemplate(
+                    `github:flzyy/create-discord-bot/templates/eslint/${answers.language}`,
+                    {
+                        dir: answers.directoryPath,
+                        force: true
+                    }
+                );
+            }
+
             spinner.success({ text: "Done!" });
             sleep();
         } catch (error) {
