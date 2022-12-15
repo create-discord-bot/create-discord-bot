@@ -8,7 +8,7 @@ import { readFile, writeFile } from "fs/promises";
 
 const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 console.clear();
-console.log(chalk.blue.bold("create-discord-bot"));
+console.log(chalk.blue.bold("create-discordjs-bot"));
 const defaultNames = [
     "awesome-bot",
     "wicked-bot",
@@ -72,7 +72,7 @@ inquirer
         try {
             spinner.update({ text: "Downloading Main Files" });
             await downloadTemplate(
-                `github:flzyy/create-discord-bot/templates/${answers.language}`,
+                `github:flzyy/create-discordjs-bot/templates/${answers.language}`,
                 {
                     dir: answers.directoryPath,
                     force: true
@@ -97,7 +97,7 @@ inquirer
             if (answers.eslint === true) {
                 spinner.update({ text: "Setting up ESLint" });
                 await downloadTemplate(
-                    `github:flzyy/create-discord-bot/templates/eslint/${answers.language}`,
+                    `github:flzyy/create-discordjs-bot/templates/eslint/${answers.language}`,
                     {
                         dir: answers.directoryPath,
                         force: true
@@ -145,7 +145,7 @@ inquirer
             if (answers.prettier === true) {
                 spinner.update({ text: "Setting up Prettier" });
                 await downloadTemplate(
-                    `github:flzyy/create-discord-bot/templates/prettier`,
+                    `github:flzyy/create-discordjs-bot/templates/prettier`,
                     {
                         dir: answers.directoryPath,
                         force: true
