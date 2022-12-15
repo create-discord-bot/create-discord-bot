@@ -31,7 +31,7 @@ const questions = [
         name: "eslint"
     },
     {
-        message: "Do you want to nable Prettier:",
+        message: "Do you want to enable Prettier:",
         type: "confirm",
         name: "prettier"
     }
