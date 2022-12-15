@@ -48,6 +48,7 @@ inquirer
         sleep();
 
         try {
+            spinner.update({ text: "Downloading Main Files" });
             await downloadTemplate(
                 `github:flzyy/create-discord-bot/templates/${answers.language}`,
                 {
@@ -57,6 +58,7 @@ inquirer
             );
 
             if (answers.eslint === true) {
+                spinner.update({ text: "Setting up ESLint" });
                 await downloadTemplate(
                     `github:flzyy/create-discord-bot/templates/eslint/${answers.language}`,
                     {
@@ -103,8 +105,58 @@ inquirer
                 }
             }
 
+            if (answers.prettier === true) {
+                spinner.update({ text: "Setting up Prettier" });
+                await downloadTemplate(
+                    `github:flzyy/create-discord-bot/templates/prettier`,
+                    {
+                        dir: answers.directoryPath,
+                        force: true
+                    }
+                );
+
+                if (answers.eslint === true) {
+                    const data = await readFile(
+                        `${answers.directoryPath}/.eslintrc.json`
+                    );
+
+                    if (data) {
+                        const object = JSON.parse(data);
+
+                        object["extends"].push("prettier");
+
+                        await writeFile(
+                            `${answers.directoryPath}/.eslintrc.json`,
+                            JSON.stringify(object, null, "\t")
+                        );
+                    }
+                }
+
+                const data = await readFile(
+                    `${answers.directoryPath}/package.json`
+                );
+
+                if (data) {
+                    const object = JSON.parse(data);
+
+                    object["devDependencies"]["prettier"] = "^2.8.1";
+
+                    await writeFile(
+                        `${answers.directoryPath}/package.json`,
+                        JSON.stringify(object, null, "\t")
+                    );
+                }
+            }
+
+            await writeFile(
+                `${answers.directoryPath}/.env`,
+                'DISCORD_TOKEN="YOUR TOKEN HERE"\nCLIENT_ID="YOUR CLIENT ID HERE"'
+            );
             spinner.success({ text: "Done!" });
-            sleep();
+            console.log(`${chalk.bold.blue("Next steps:")}
+    1. npm install ${chalk.gray("(Installs all dependencies required)")}
+    2. Fill out .env file
+    3. "npm start" ${chalk.gray("(Starts the bot)")}`);
         } catch (error) {
             spinner.error({
                 text: `An error has occurred: ${chalk.red(error)}`
