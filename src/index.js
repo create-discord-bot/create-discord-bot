@@ -9,16 +9,38 @@ import { readFile, writeFile } from "fs/promises";
 const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 console.clear();
 console.log(chalk.blue.bold("create-discord-bot"));
+const defaultNames = [
+    "awesome-bot",
+    "wicked-bot",
+    "a-nice-bot",
+    "cool-bot",
+    "a-bot",
+    "general-purpose-bot",
+    "the-bot",
+    "sbot"
+];
 
 const questions = [
     {
-        message: "Where would you like to create the discord bot:",
+        message: "Where would you like to create the discord bot ?",
         type: "input",
         name: "directoryPath",
-        default: "./"
+        default: "./",
+        filter(value) {
+            if (value.endsWith("/")) {
+                return value.slice(0, -1);
+            }
+            return value;
+        }
     },
     {
-        message: "Language to use:",
+        message: "What is the name of your bot ?",
+        type: "input",
+        name: "botName",
+        default: defaultNames[Math.floor(Math.random() * defaultNames.length)]
+    },
+    {
+        message: "What language do you want to use ?",
         name: "language",
         type: "list",
         choices: ["Typescript", "Javascript"],
@@ -27,12 +49,12 @@ const questions = [
         }
     },
     {
-        message: "Do you want to enable ESLint:",
+        message: "Do you want to enable ESLint ?",
         type: "confirm",
         name: "eslint"
     },
     {
-        message: "Do you want to enable Prettier:",
+        message: "Do you want to enable Prettier ?",
         type: "confirm",
         name: "prettier"
     }
@@ -56,6 +78,21 @@ inquirer
                     force: true
                 }
             );
+
+            const data = await readFile(
+                `${answers.directoryPath}/package.json`
+            );
+
+            if (data) {
+                const object = JSON.parse(data);
+
+                object["name"] = answers.botName;
+
+                await writeFile(
+                    `${answers.directoryPath}/package.json`,
+                    JSON.stringify(object, null, "\t")
+                );
+            }
 
             if (answers.eslint === true) {
                 spinner.update({ text: "Setting up ESLint" });
@@ -153,10 +190,15 @@ inquirer
                 'DISCORD_TOKEN="YOUR TOKEN HERE"\nCLIENT_ID="YOUR CLIENT ID HERE"'
             );
             spinner.success({ text: "Done!" });
+
             console.log(`${chalk.bold.blue("Next steps:")}
-    1. npm install ${chalk.gray("(Installs all dependencies required)")}
-    2. Fill out .env file
-    3. "npm start" ${chalk.gray("(Starts the bot)")}`);
+
+    1. cd ${answers.directoryPath} ${chalk.gray(
+                "(Puts your terminal into the folder)"
+            )}
+    2. npm install ${chalk.gray("(Installs all dependencies required)")}
+    3. Fill out .env file
+    4. "npm start" ${chalk.gray("(Starts the bot)")}`);
         } catch (error) {
             spinner.error({
                 text: `An error has occurred: ${chalk.red(error)}`
