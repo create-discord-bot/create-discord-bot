@@ -15,9 +15,11 @@ CLI tool to bootstrap your discord.js bot with
 
 ## Usage:
 
-Simply run `npx create-discord-bot` and answer all of the questions.
+Simply run `npx @flzyy/create-discord-bot` and answer all of the questions.
+
+<img src="assets/main.gif" width="500" style="border-radius: .2rem;">
 
 ## Todo:
 
--   [ ] Add other javascript flavors.
--   [ ] Add more options in CLI.
+-   <input type="checkbox"> Add other javascript flavors.
+-   <input type="checkbox"> Add more options in CLI.
