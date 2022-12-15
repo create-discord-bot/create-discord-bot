@@ -4,6 +4,7 @@ import chalk from "chalk";
 import inquirer from "inquirer";
 import { createSpinner } from "nanospinner";
 import { downloadTemplate } from "giget";
+import { readFile, writeFile } from "fs/promises";
 
 const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 console.clear();
@@ -63,6 +64,43 @@ inquirer
                         force: true
                     }
                 );
+
+                if (answers.language === "typescript") {
+                    const data = await readFile(
+                        `${answers.directoryPath}/package.json`
+                    );
+
+                    if (data) {
+                        const object = JSON.parse(data);
+
+                        object["devDependencies"][
+                            "@typescript-eslint/eslint-plugin"
+                        ] = "^5.46.1";
+                        object["devDependencies"]["@typescript-eslint/parser"] =
+                            "^5.46.1";
+                        object["devDependencies"]["eslint"] = "^8.29.0";
+
+                        await writeFile(
+                            `${answers.directoryPath}/package.json`,
+                            JSON.stringify(object, null, "\t")
+                        );
+                    }
+                } else {
+                    const data = await readFile(
+                        `${answers.directoryPath}/package.json`
+                    );
+
+                    if (data) {
+                        const object = JSON.parse(data);
+
+                        object["devDependencies"]["eslint"] = "^8.29.0";
+
+                        await writeFile(
+                            `${answers.directoryPath}/package.json`,
+                            JSON.stringify(object, null, "\t")
+                        );
+                    }
+                }
             }
 
             spinner.success({ text: "Done!" });
