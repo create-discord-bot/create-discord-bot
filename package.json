@@ -1,5 +1,5 @@
 {
-    "name": "create-discordjs-bot",
+    "name": "create-discord_bot",
     "version": "1.0.0",
     "description": "CLI tool for creating discord bots",
     "main": "src/index.js",
@@ -9,7 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/FLzyy/create-discordjs-bot.git"
+        "url": "git+https://github.com/FLzyy/create-discord_bot.git"
     },
     "keywords": [
         "discordjs",
@@ -20,9 +20,9 @@
     "author": "FLzyy",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/FLzyy/create-discordjs-bot/issues"
+        "url": "https://github.com/FLzyy/create-discord_bot/issues"
     },
-    "homepage": "https://github.com/FLzyy/create-discordjs-bot#readme",
+    "homepage": "https://github.com/FLzyy/create-discord_bot#readme",
     "devDependencies": {
         "eslint": "^8.29.0",
         "eslint-config-prettier": "^8.5.0",
