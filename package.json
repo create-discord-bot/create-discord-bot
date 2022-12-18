@@ -29,7 +29,6 @@
         "prettier": "^2.8.1"
     },
     "dependencies": {
-        "chalk": "^5.2.0",
         "giget": "^1.0.0",
         "inquirer": "^9.1.4",
         "nanospinner": "^1.1.0"

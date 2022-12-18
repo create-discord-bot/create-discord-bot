@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 
-import chalk from "chalk";
 import inquirer from "inquirer";
 import { createSpinner } from "nanospinner";
 import { downloadTemplate } from "giget";
@@ -8,7 +7,7 @@ import { readFile, writeFile } from "fs/promises";
 
 const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 console.clear();
-console.log(chalk.blue.bold("create-discord-bot"));
+console.log("\x1b[1m\x1b[34m%s\x1b[0m", "create-discord-bot");
 const defaultNames = [
     "awesome-bot",
     "wicked-bot",
@@ -199,21 +198,29 @@ inquirer
                 'DISCORD_TOKEN="YOUR TOKEN HERE"\nCLIENT_ID="YOUR CLIENT ID HERE"'
             );
             spinner.success({ text: "Done!" });
-
-            console.log(`${chalk.bold.blue("Next steps:")}
-
-    1. cd ${answers.directoryPath} ${chalk.gray(
-                "(Puts your terminal into the folder)"
-            )}
-    2. npm install ${chalk.gray("(Installs all dependencies required)")}
-    3. Fill out .env file
-    4. "npm start" ${chalk.gray("(Starts the bot)")}`);
+            console.log("\x1b[1m\x1b[34m%s\x1b[0m", "Next steps:");
+            console.log(
+                "\x1b[37m",
+                "1. cd asd",
+                "\x1b[90m (Puts your terminal into the folder)"
+            );
+            console.log(
+                "\x1b[37m",
+                "2. npm install",
+                "\x1b[90m (Installs all dependencies required)"
+            );
+            console.log("\x1b[37m", "3. Fill out .env file");
+            console.log(
+                "\x1b[37m",
+                "4. npm start",
+                "\x1b[90m (Starts the bot)"
+            );
         } catch (error) {
             spinner.error({
-                text: `An error has occurred: ${chalk.red(error)}`
+                text: `\x1b[90m An error has occured: ${"\x1b[31m asdsasd"}`
             });
         }
     })
     .catch((error) => {
-        console.error(chalk.red(error));
+        console.error("\x1b[31m", error);
     });
