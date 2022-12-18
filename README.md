@@ -19,3 +19,5 @@ CLI tool to bootstrap your discord.js bot with
 Simply run `npx @flzyy/create-discord-bot` and answer all of the questions.
 
 <img src="assets/main.gif" width="500" style="border-radius: .2rem;">
+
+<sub>Disclaimer: This was made using the latest version of NodeJS (19.3.0), I can't guarantee that it will work on all versions, if you find any issues during installation or failure for the bot to start even after configuiring everything properly please create an issue on the github repository.</sub>
