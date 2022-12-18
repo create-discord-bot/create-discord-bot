@@ -34,5 +34,10 @@
         "inquirer": "^9.1.4",
         "nanospinner": "^1.1.0"
     },
-    "bin": "src/index.js"
+    "bin": "src/index.js",
+    "files": [
+        "src/**/*",
+        "LICENSE",
+        "README.md"
+    ]
 }
