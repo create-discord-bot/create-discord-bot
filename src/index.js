@@ -81,7 +81,7 @@ inquirer
         try {
             spinner.update({ text: "Downloading Main Files" });
             await downloadTemplate(
-                `github:flzyy/create-discord-bot/templates/${answers.language}/${answers.logger}`,
+                `github:flzyy/create-discord-bot/templates/${answers.language}/${answers.logger}#feature-logger`,
                 {
                     dir: answers.directoryPath,
                     force: true
