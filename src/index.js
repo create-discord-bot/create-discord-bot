@@ -49,6 +49,15 @@ const questions = [
         }
     },
     {
+        message: "What type of logging do you want to use ?",
+        name: "logger",
+        type: "list",
+        choices: ["Default", "Pino"],
+        filter(value) {
+            return value.toLowerCase();
+        }
+    },
+    {
         message: "Do you want to enable ESLint ?",
         type: "confirm",
         name: "eslint"
@@ -72,7 +81,7 @@ inquirer
         try {
             spinner.update({ text: "Downloading Main Files" });
             await downloadTemplate(
-                `github:flzyy/create-discord-bot/templates/${answers.language}`,
+                `github:flzyy/create-discord-bot/templates/${answers.language}/${answers.logger}#feature-logger`,
                 {
                     dir: answers.directoryPath,
                     force: true
