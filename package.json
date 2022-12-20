@@ -36,7 +36,6 @@
     "bin": "src/index.js",
     "files": [
         "src/**/*",
-        "LICENSE",
         "README.md"
     ]
 }
