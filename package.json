@@ -5,7 +5,15 @@
     "main": "src/index.js",
     "type": "module",
     "scripts": {
-        "start": "node src/index.js"
+        "build": "npx swc src -d dist --config-file .swcrc",
+        "prestart": "npm run build",
+        "start": "node dist/index.js",
+        "prepatch": "npm run build",
+        "patch": "npm version patch && npm publish && git push --follow-tags",
+        "preminor": "npm run build",
+        "minor": "npm version minor && npm publish && git push --follow-tags",
+        "premajor": "npm run build",
+        "major": "npm version major && npm publish && git push --follow-tags"
     },
     "repository": {
         "type": "git",
@@ -24,9 +32,16 @@
     },
     "homepage": "https://github.com/FLzyy/create-discord-bot#readme",
     "devDependencies": {
+        "@swc/cli": "^0.1.57",
+        "@swc/core": "^1.3.23",
+        "@types/inquirer": "^9.0.3",
+        "@types/node": "^18.11.17",
+        "@typescript-eslint/eslint-plugin": "^5.47.0",
+        "@typescript-eslint/parser": "^5.47.0",
         "eslint": "^8.29.0",
         "eslint-config-prettier": "^8.5.0",
-        "prettier": "^2.8.1"
+        "prettier": "^2.8.1",
+        "typescript": "^4.9.4"
     },
     "dependencies": {
         "giget": "^1.0.0",
@@ -35,7 +50,7 @@
     },
     "bin": "src/index.js",
     "files": [
-        "src/**/*",
+        "dist/**/*",
         "README.md"
     ]
 }
