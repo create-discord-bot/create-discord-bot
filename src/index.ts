@@ -58,7 +58,7 @@ const questions = [
   },
   {
     message: "What deployment method(s) do you want to use ?",
-    name: "logger",
+    name: "deployment",
     type: "checkbox",
     choices: [
       {
@@ -103,19 +103,61 @@ inquirer
     try {
       spinner.update({ text: "Downloading Main Files" });
       await downloadTemplate(
-        `github:flzyy/create-discord-bot/templates/${answers.language}/${answers.logger}`,
+        `github:flzyy/create-discord-bot/templates/${answers.language}/${answers.logger}#feature-register-options`,
         {
           dir: answers.directoryPath,
           force: true,
         },
       );
 
+      const length = answers.deployment.length;
+      spinner.update({
+        text: `Setting up Deployment ${length > 1 ? "methods" : "method"}`,
+      });
+      for (let i = 0; i < length; i++) {
+        await downloadTemplate(
+          `github:flzyy/create-discord-bot/templates/deploy/${answers.language}/${answers.logger}/${
+            answers.deployment[i]
+          }#feature-register-options`,
+          {
+            dir: `${answers.directoryPath}/src/`,
+            force: true,
+          },
+        );
+      }
+
       const data = await readFile(`${answers.directoryPath}/package.json`);
 
       if (data) {
         const object = JSON.parse(data.toString());
+        let prestart = "";
 
         object["name"] = answers.botName;
+
+        for (let i = 0; i < length; i++) {
+          object["scripts"][answers.deployment[i]] = `${
+            answers.language === "typescript" ? "npx tsx" : "node"
+          } src/${answers.deployment[i]}.${
+            answers.language === "typescript" ? "ts" : "js"
+          }`;
+        }
+
+        if (
+          answers.deployment.includes("registergu") &&
+          answers.deployment.includes("registergl")
+        ) {
+          prestart += "npm run registergu && npm run registergl";
+        } else if (answers.deployment.includes("registergu")) {
+          prestart += "npm run registergu";
+        } else if (answers.deployment.includes("registergul")) {
+          prestart += "npm run registergl";
+        }
+
+        if (answers.logger === "pino") {
+          prestart += "| npx pino-pretty";
+        }
+
+        object["scripts"]["prestart"] = prestart;
 
         await writeFile(
           `${answers.directoryPath}/package.json`,
@@ -126,7 +168,7 @@ inquirer
       if (answers.eslint === true) {
         spinner.update({ text: "Setting up ESLint" });
         await downloadTemplate(
-          `github:flzyy/create-discord-bot/templates/eslint/${answers.language}`,
+          `github:flzyy/create-discord-bot/templates/eslint/${answers.language}#feature-register-options`,
           {
             dir: answers.directoryPath,
             force: true,
@@ -168,7 +210,7 @@ inquirer
       if (answers.prettier === true) {
         spinner.update({ text: "Setting up Prettier" });
         await downloadTemplate(
-          "github:flzyy/create-discord-bot/templates/prettier",
+          "github:flzyy/create-discord-bot/templates/prettier#feature-register-options",
           {
             dir: answers.directoryPath,
             force: true,
@@ -208,12 +250,13 @@ inquirer
 
       await writeFile(
         `${answers.directoryPath}/.env`,
-        'DISCORD_TOKEN="YOUR TOKEN HERE"\nCLIENT_ID="YOUR CLIENT ID HERE"',
+        'DISCORD_TOKEN="YOUR TOKEN HERE"\nCLIENT_ID="YOUR CLIENT ID HERE"\nGUILD_ID="YOUR GUILD ID HERE"',
       );
+
       spinner.success({ text: "Done!" });
       console.log("\x1b[1m\x1b[34mNext steps:\x1b[0m");
       console.log(
-        "\x1b[37m1. cd asd\x1b[0m",
+        `\x1b[37m1. cd ${answers.directoryPath}\x1b[0m`,
         "\x1b[90m(Puts your terminal into the folder)\x1b[0m",
       );
       console.log(
