@@ -103,7 +103,7 @@ inquirer
     try {
       spinner.update({ text: "Downloading Main Files" });
       await downloadTemplate(
-        `github:flzyy/create-discord-bot/templates/${answers.language}/${answers.logger}#feature-register-options`,
+        `github:flzyy/create-discord-bot/templates/${answers.language}/${answers.logger}`,
         {
           dir: answers.directoryPath,
           force: true,
@@ -118,7 +118,7 @@ inquirer
         await downloadTemplate(
           `github:flzyy/create-discord-bot/templates/deploy/${answers.language}/${answers.logger}/${
             answers.deployment[i]
-          }#feature-register-options`,
+          }`,
           {
             dir: `${answers.directoryPath}/src/`,
             force: true,
@@ -168,7 +168,7 @@ inquirer
       if (answers.eslint === true) {
         spinner.update({ text: "Setting up ESLint" });
         await downloadTemplate(
-          `github:flzyy/create-discord-bot/templates/eslint/${answers.language}#feature-register-options`,
+          `github:flzyy/create-discord-bot/templates/eslint/${answers.language}`,
           {
             dir: answers.directoryPath,
             force: true,
@@ -210,7 +210,7 @@ inquirer
       if (answers.prettier === true) {
         spinner.update({ text: "Setting up Prettier" });
         await downloadTemplate(
-          "github:flzyy/create-discord-bot/templates/prettier#feature-register-options",
+          "github:flzyy/create-discord-bot/templates/prettier",
           {
             dir: answers.directoryPath,
             force: true,
