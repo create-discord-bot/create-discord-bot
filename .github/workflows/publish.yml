@@ -13,20 +13,13 @@ jobs:
     build_and_publish:
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout Repository
-              uses: actions/checkout@v3
-
-            - name: Setup Node
-              uses: actions/setup-node@v3
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
               with:
                   node-version: 19.3.0
                   registry-url: https://registry.npmjs.org/
-
-            - name: Build
-              run: npm ci
-              run: npm run build
-
-            - name: Publish
-              run: npm publish
+            - run: npm ci
+            - run: npm run build
+            - run: npm publish
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
