@@ -57,6 +57,29 @@ const questions = [
     },
   },
   {
+    message: "What deployment method(s) do you want to use ?",
+    name: "logger",
+    type: "checkbox",
+    choices: [
+      {
+        name: "Global",
+        checked: true,
+      },
+      {
+        name: "Guild",
+      },
+    ],
+    filter(value: string[]) {
+      return value.map((value) => {
+        if (value === "Global") {
+          return "registergl";
+        } else if (value === "Guild") {
+          return "registergu";
+        }
+      });
+    },
+  },
+  {
     message: "Do you want to enable ESLint ?",
     type: "confirm",
     name: "eslint",
