@@ -5,8 +5,9 @@
     "main": "dist/index.js",
     "type": "module",
     "scripts": {
-        "build": "npx swc src -d dist_dev --config-file .swcrc",
-        "prestart": "npm run build",
+        "build": "npx swc src -d dist --config-file .swcrc",
+        "build_dev": "npx swc src -d dist_dev --config-file .swcrc",
+        "prestart": "npm run build_dev",
         "start": "node dist_dev/index.js",
         "poststart": "rmdir /Q /S dist_dev && rmdir /Q /S bot_dev",
         "patch": "npm version patch && git push --follow-tags",
