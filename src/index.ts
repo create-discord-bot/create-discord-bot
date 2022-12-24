@@ -18,16 +18,6 @@ let deployment: string[];
 let eslint: boolean;
 let prettier: boolean;
 
-console.log(mri(argv, {
-  alias: {
-    eslint: ["esl", "es", "e"],
-    prettier: ["prt", "pr", "p"],
-    language: ["lang", "l"],
-    logger: ["log", "lo"],
-    directory: ["dir", "d"],
-    deployment: ["de", "deploy", "dep"],
-  },
-}));
 const args = mri(argv, {
   alias: {
     eslint: ["esl", "es", "e"],
