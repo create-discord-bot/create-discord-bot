@@ -11,12 +11,12 @@ console.clear();
 console.log("\x1b[1m\x1b[34mcreate-discord-bot\x1b[0m");
 
 const argv = process.argv.slice(2);
-let directoryPath: string;
-let language: "typescript" | "javascript";
-let logger: "default" | "pino";
-let deployment: string[];
-let eslint: boolean;
-let prettier: boolean;
+let directoryPath = "";
+let language: "typescript" | "javascript" = "typescript";
+let logger: "default" | "pino" = "pino";
+let deployment: string[] = [];
+let eslint = true;
+let prettier = true;
 
 const args = mri(argv, {
   alias: {
@@ -31,116 +31,119 @@ const args = mri(argv, {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const questions: any = [];
-if (args.directory) {
-  if (args.directory.endsWith("/")) {
-    directoryPath = args.directory.slice(0, -1);
-  }
-  directoryPath = args.directory;
-} else {
-  questions.push(
-    {
-      message: "Where would you like to create the discord bot ?",
-      type: "input",
-      name: "directoryPath",
-      default: "./",
-      filter(value: string) {
-        if (value.endsWith("/")) {
-          return value.slice(0, -1);
-        }
-        return value;
-      },
-    },
-  );
-}
 
-if (args.language) {
-  language = args.language.toLowerCase();
-} else {
-  questions.push(
-    {
-      message: "What language do you want to use ?",
-      name: "language",
-      type: "list",
-      choices: ["Typescript", "Javascript"],
-      filter(value: string) {
-        return value.toLowerCase();
-      },
-    },
-  );
-}
-
-if (args.logger) {
-  logger = args.logger.toLowerCase();
-} else {
-  questions.push(
-    {
-      message: "What type of logging do you want to use ?",
-      name: "logger",
-      type: "list",
-      choices: ["Default", "Pino"],
-      filter(value: string) {
-        return value.toLowerCase();
-      },
-    },
-  );
-}
-
-if (args.deployment) {
-  if (args.deployment.includes(",")) {
-    deployment = args.deployment.split(",");
+if (args) {
+  if (args.directory) {
+    if (args.directory.endsWith("/")) {
+      directoryPath = args.directory.slice(0, -1);
+    }
+    directoryPath = args.directory;
   } else {
-    deployment = [args.deployment];
-  }
-} else {
-  questions.push(
-    {
-      message: "What deployment method(s) do you want to use ?",
-      name: "deployment",
-      type: "checkbox",
-      choices: [
-        {
-          name: "Global",
-          checked: true,
-        },
-        {
-          name: "Guild",
-        },
-      ],
-      filter(value: string[]) {
-        return value.map((value) => {
-          if (value === "Global") {
-            return "registergl";
-          } else if (value === "Guild") {
-            return "registergu";
+    questions.push(
+      {
+        message: "Where would you like to create the discord bot ?",
+        type: "input",
+        name: "directoryPath",
+        default: "./",
+        filter(value: string) {
+          if (value.endsWith("/")) {
+            return value.slice(0, -1);
           }
-        });
+          return value;
+        },
       },
-    },
-  );
-}
+    );
+  }
 
-if (args.prettier) {
-  prettier = JSON.parse(args.prettier);
-} else {
-  questions.push(
-    {
-      message: "Do you want to enable Prettier ?",
-      type: "confirm",
-      name: "prettier",
-    },
-  );
-}
+  if (args.language) {
+    language = args.language.toLowerCase();
+  } else {
+    questions.push(
+      {
+        message: "What language do you want to use ?",
+        name: "language",
+        type: "list",
+        choices: ["Typescript", "Javascript"],
+        filter(value: string) {
+          return value.toLowerCase();
+        },
+      },
+    );
+  }
 
-if (args.eslint) {
-  eslint = JSON.parse(args.eslint);
-} else {
-  questions.push(
-    {
-      message: "Do you want to enable ESLint ?",
-      type: "confirm",
-      name: "eslint",
-    },
-  );
+  if (args.logger) {
+    logger = args.logger.toLowerCase();
+  } else {
+    questions.push(
+      {
+        message: "What type of logging do you want to use ?",
+        name: "logger",
+        type: "list",
+        choices: ["Default", "Pino"],
+        filter(value: string) {
+          return value.toLowerCase();
+        },
+      },
+    );
+  }
+
+  if (args.deployment) {
+    if (args.deployment.includes(",")) {
+      deployment = args.deployment.split(",");
+    } else {
+      deployment = [args.deployment];
+    }
+  } else {
+    questions.push(
+      {
+        message: "What deployment method(s) do you want to use ?",
+        name: "deployment",
+        type: "checkbox",
+        choices: [
+          {
+            name: "Global",
+            checked: true,
+          },
+          {
+            name: "Guild",
+          },
+        ],
+        filter(value: string[]) {
+          return value.map((value) => {
+            if (value === "Global") {
+              return "registergl";
+            } else if (value === "Guild") {
+              return "registergu";
+            }
+          });
+        },
+      },
+    );
+  }
+
+  if (args.prettier) {
+    prettier = JSON.parse(args.prettier);
+  } else {
+    questions.push(
+      {
+        message: "Do you want to enable Prettier ?",
+        type: "confirm",
+        name: "prettier",
+      },
+    );
+  }
+
+  if (args.eslint) {
+    eslint = JSON.parse(args.eslint);
+  } else {
+    questions.push(
+      {
+        message: "Do you want to enable ESLint ?",
+        type: "confirm",
+        name: "eslint",
+      },
+    );
+  }
 }
 
 if (questions.length > 0) {
