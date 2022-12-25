@@ -11,6 +11,7 @@
         "lint": "eslint src/**/*.ts",
         "fix": "eslint --fix src/**/*.ts",
 		"format": "prettier --write src/**/*",
+		"style": "prettier --check src/**/*",
         "check": "tsc --noEmit",
         "poststart": "rmdir /Q /S dist && rmdir /Q /S bot_dev",
         "patch": "npm version patch && git push --follow-tags",
