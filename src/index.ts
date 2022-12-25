@@ -39,52 +39,46 @@ if (args) {
     }
     directoryPath = args.directory;
   } else {
-    questions.push(
-      {
-        message: "Where would you like to create the discord bot ?",
-        type: "input",
-        name: "directoryPath",
-        default: "./",
-        filter(value: string) {
-          if (value.endsWith("/")) {
-            return value.slice(0, -1);
-          }
-          return value;
-        },
+    questions.push({
+      message: "Where would you like to create the discord bot ?",
+      type: "input",
+      name: "directoryPath",
+      default: "./",
+      filter(value: string) {
+        if (value.endsWith("/")) {
+          return value.slice(0, -1);
+        }
+        return value;
       },
-    );
+    });
   }
 
   if (args.language) {
     language = args.language.toLowerCase();
   } else {
-    questions.push(
-      {
-        message: "What language do you want to use ?",
-        name: "language",
-        type: "list",
-        choices: ["Typescript", "Javascript"],
-        filter(value: string) {
-          return value.toLowerCase();
-        },
+    questions.push({
+      message: "What language do you want to use ?",
+      name: "language",
+      type: "list",
+      choices: ["Typescript", "Javascript"],
+      filter(value: string) {
+        return value.toLowerCase();
       },
-    );
+    });
   }
 
   if (args.logger) {
     logger = args.logger.toLowerCase();
   } else {
-    questions.push(
-      {
-        message: "What type of logging do you want to use ?",
-        name: "logger",
-        type: "list",
-        choices: ["Default", "Pino"],
-        filter(value: string) {
-          return value.toLowerCase();
-        },
+    questions.push({
+      message: "What type of logging do you want to use ?",
+      name: "logger",
+      type: "list",
+      choices: ["Default", "Pino"],
+      filter(value: string) {
+        return value.toLowerCase();
       },
-    );
+    });
   }
 
   if (args.deployment) {
@@ -94,55 +88,49 @@ if (args) {
       deployment = [args.deployment];
     }
   } else {
-    questions.push(
-      {
-        message: "What deployment method(s) do you want to use ?",
-        name: "deployment",
-        type: "checkbox",
-        choices: [
-          {
-            name: "Global",
-            checked: true,
-          },
-          {
-            name: "Guild",
-          },
-        ],
-        filter(value: string[]) {
-          return value.map((value) => {
-            if (value === "Global") {
-              return "registergl";
-            } else if (value === "Guild") {
-              return "registergu";
-            }
-          });
+    questions.push({
+      message: "What deployment method(s) do you want to use ?",
+      name: "deployment",
+      type: "checkbox",
+      choices: [
+        {
+          name: "Global",
+          checked: true,
         },
+        {
+          name: "Guild",
+        },
+      ],
+      filter(value: string[]) {
+        return value.map((value) => {
+          if (value === "Global") {
+            return "registergl";
+          } else if (value === "Guild") {
+            return "registergu";
+          }
+        });
       },
-    );
+    });
   }
 
   if (args.prettier) {
     prettier = JSON.parse(args.prettier);
   } else {
-    questions.push(
-      {
-        message: "Do you want to enable Prettier ?",
-        type: "confirm",
-        name: "prettier",
-      },
-    );
+    questions.push({
+      message: "Do you want to enable Prettier ?",
+      type: "confirm",
+      name: "prettier",
+    });
   }
 
   if (args.eslint) {
     eslint = JSON.parse(args.eslint);
   } else {
-    questions.push(
-      {
-        message: "Do you want to enable ESLint ?",
-        type: "confirm",
-        name: "eslint",
-      },
-    );
+    questions.push({
+      message: "Do you want to enable ESLint ?",
+      type: "confirm",
+      name: "eslint",
+    });
   }
 }
 
@@ -247,15 +235,19 @@ if (questions.length > 0) {
           );
 
           if (language === "typescript") {
-            const data = await readFile(`${directoryPath}/package.json`);
+            const data = await readFile(
+              `${directoryPath}/package.json`,
+            );
 
             if (data) {
               const object = JSON.parse(data.toString());
 
-              object["devDependencies"]["@typescript-eslint/eslint-plugin"] =
-                "^5.46.1";
-              object["devDependencies"]["@typescript-eslint/parser"] =
-                "^5.46.1";
+              object["devDependencies"][
+                "@typescript-eslint/eslint-plugin"
+              ] = "^5.46.1";
+              object["devDependencies"][
+                "@typescript-eslint/parser"
+              ] = "^5.46.1";
               object["devDependencies"]["eslint"] = "^8.29.0";
 
               await writeFile(
@@ -264,7 +256,9 @@ if (questions.length > 0) {
               );
             }
           } else {
-            const data = await readFile(`${directoryPath}/package.json`);
+            const data = await readFile(
+              `${directoryPath}/package.json`,
+            );
 
             if (data) {
               const object = JSON.parse(data.toString());
@@ -306,7 +300,9 @@ if (questions.length > 0) {
             }
           }
 
-          const data = await readFile(`${directoryPath}/package.json`);
+          const data = await readFile(
+            `${directoryPath}/package.json`,
+          );
 
           if (data) {
             const object = JSON.parse(data.toString());
@@ -433,8 +429,9 @@ if (questions.length > 0) {
         if (data) {
           const object = JSON.parse(data.toString());
 
-          object["devDependencies"]["@typescript-eslint/eslint-plugin"] =
-            "^5.46.1";
+          object["devDependencies"][
+            "@typescript-eslint/eslint-plugin"
+          ] = "^5.46.1";
           object["devDependencies"]["@typescript-eslint/parser"] = "^5.46.1";
           object["devDependencies"]["eslint"] = "^8.29.0";
 
@@ -470,9 +467,7 @@ if (questions.length > 0) {
       );
 
       if (eslint === true) {
-        const data = await readFile(
-          `${directoryPath}/.eslintrc.json`,
-        );
+        const data = await readFile(`${directoryPath}/.eslintrc.json`);
 
         if (data) {
           const object = JSON.parse(data.toString());

@@ -6,10 +6,13 @@
     "type": "module",
     "scripts": {
         "build": "npx swc src -d dist --config-file .swcrc",
-        "build_dev": "npx swc src -d dist_dev --config-file .swcrc",
-        "prestart": "npm run build_dev",
-        "start": "node dist_dev/index.js",
-        "poststart": "rmdir /Q /S dist_dev && rmdir /Q /S bot_dev",
+        "prestart": "npm run build",
+        "start": "node dist/index.js",
+        "lint": "eslint src/**/*.ts",
+        "fix": "eslint --fix src/**/*.ts",
+		"format": "prettier --write src/**/*",
+        "check": "tsc --noEmit",
+        "poststart": "rmdir /Q /S dist && rmdir /Q /S bot_dev",
         "patch": "npm version patch && git push --follow-tags",
         "minor": "npm version minor && git push --follow-tags",
         "major": "npm version major && git push --follow-tags"
