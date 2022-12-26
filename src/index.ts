@@ -313,6 +313,7 @@ inquirer
         "\n\x1b[37m· npm install\x1b[0m \x1b[90m(Installs all dependencies required)\x1b[0m";
     }
 
+    console.clear();
     console.log(...toLog);
     process.exit(0);
   })
