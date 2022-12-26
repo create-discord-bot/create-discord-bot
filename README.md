@@ -3,6 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/@flzyy%2Fcreate-discord-bot.svg)](https://www.npmjs.com/package/@flzyy/create-discord-bot)
 [![npm version](https://img.shields.io/npm/dw/@flzyy%2Fcreate-discord-bot.svg)](https://www.npmjs.com/package/@flzyy/create-discord-bot)
 [![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/@flzyy/create-discord-bot)](https://www.npmjs.com/package/@flzyy/create-discord-bot)
+[![CodeFactor](https://www.codefactor.io/repository/github/create-discord-bot/create-discord-bot/badge)](https://www.codefactor.io/repository/github/create-discord-bot/create-discord-bot)
 
 CLI tool to bootstrap your discord.js bot with
 [Typescript](https://www.npmjs.com/package/typescript) or just default Javascript.
