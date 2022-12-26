@@ -2,13 +2,9 @@
 
 import inquirer from "inquirer";
 import mri from "mri";
+import { downloadTemplate } from "giget";
 import { createSpinner } from "nanospinner";
 import { readFile, writeFile } from "fs/promises";
-import { Worker } from "worker_threads";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 console.clear();
 console.log("\x1b[1m\x1b[34mcreate-discord-bot\x1b[0m");
@@ -135,43 +131,29 @@ if (args.eslint) {
   });
 }
 
-const download = (repository: string, directoryPath: string) => {
-  return new Promise((resolve, reject) => {
-    const worker = new Worker(join(__dirname, "workers/download.js"), {
-      workerData: { repository: repository, directoryPath: directoryPath },
-    });
-
-    worker.on("message", resolve);
-    worker.on("error", reject);
-    worker.on("exit", (code) => {
-      if (code !== 0) {
-        reject(new Error(`Worker exited with code: ${code}`));
-      }
-    });
-  });
-};
-
 const initializeProject = async () => {
   console.clear();
   const spinner = createSpinner("Setting up your project...");
   spinner.start();
   try {
-    spinner.update({ text: "Downloading Main Files" });
-    await download(
+    await downloadTemplate(
       `github:flzyy/create-discord-bot/templates/${language}/${logger}`,
-      directoryPath,
+      {
+        dir: directoryPath,
+        force: true,
+      },
     );
 
     const length = deployment.length;
-    spinner.update({
-      text: `Setting up Deployment ${length > 1 ? "methods" : "method"}`,
-    });
-    for (let i = 0; i >= length; i--) {
-      download(
+    for (let i = 0; i < length; i++) {
+      await downloadTemplate(
         `github:flzyy/create-discord-bot/templates/deploy/${language}/${logger}/${
           deployment[i]
         }`,
-        `${directoryPath}/src/`,
+        {
+          dir: `${directoryPath}/src/`,
+          force: true,
+        },
       );
     }
 
@@ -204,86 +186,56 @@ const initializeProject = async () => {
 
       object["scripts"]["prestart"] = prestart;
 
-      await writeFile(
-        `${directoryPath}/package.json`,
-        JSON.stringify(object, null, "\t"),
-      );
-    }
+      if (eslint === true) {
+        await downloadTemplate(
+          `github:flzyy/create-discord-bot/templates/eslint/${language}`,
+          {
+            dir: directoryPath,
+            force: true,
+          },
+        );
 
-    if (eslint === true) {
-      spinner.update({ text: "Setting up ESLint" });
-      await download(
-        `github:flzyy/create-discord-bot/templates/eslint/${language}`,
-        directoryPath,
-      );
-
-      if (language === "typescript") {
-        const data = await readFile(`${directoryPath}/package.json`);
-
-        if (data) {
-          const object = JSON.parse(data.toString());
-
+        if (language === "typescript") {
           object["devDependencies"][
             "@typescript-eslint/eslint-plugin"
           ] = "^5.46.1";
           object["devDependencies"]["@typescript-eslint/parser"] = "^5.46.1";
           object["devDependencies"]["eslint"] = "^8.29.0";
-
-          await writeFile(
-            `${directoryPath}/package.json`,
-            JSON.stringify(object, null, "\t"),
-          );
-        }
-      } else {
-        const data = await readFile(`${directoryPath}/package.json`);
-
-        if (data) {
-          const object = JSON.parse(data.toString());
-
+        } else {
           object["devDependencies"]["eslint"] = "^8.29.0";
-
-          await writeFile(
-            `${directoryPath}/package.json`,
-            JSON.stringify(object, null, "\t"),
-          );
-        }
-      }
-    }
-
-    if (prettier === true) {
-      spinner.update({ text: "Setting up Prettier" });
-      download(
-        "github:flzyy/create-discord-bot/templates/prettier",
-        directoryPath,
-      );
-
-      if (eslint === true) {
-        const data = await readFile(`${directoryPath}/.eslintrc.json`);
-
-        if (data) {
-          const object = JSON.parse(data.toString());
-
-          object["extends"].push("prettier");
-
-          await writeFile(
-            `${directoryPath}/.eslintrc.json`,
-            JSON.stringify(object, null, "\t"),
-          );
         }
       }
 
-      const data = await readFile(`${directoryPath}/package.json`);
-
-      if (data) {
-        const object = JSON.parse(data.toString());
-
-        object["devDependencies"]["prettier"] = "^2.8.1";
-
-        await writeFile(
-          `${directoryPath}/package.json`,
-          JSON.stringify(object, null, "\t"),
+      if (prettier === true) {
+        await downloadTemplate(
+          "github:flzyy/create-discord-bot/templates/prettier",
+          {
+            dir: directoryPath,
+            force: true,
+          },
         );
+
+        if (eslint === true) {
+          const data = await readFile(`${directoryPath}/.eslintrc.json`);
+
+          if (data) {
+            const object = JSON.parse(data.toString());
+
+            object["extends"].push("prettier");
+
+            await writeFile(
+              `${directoryPath}/.eslintrc.json`,
+              JSON.stringify(object, null, "\t"),
+            );
+          }
+        }
+        object["devDependencies"]["prettier"] = "^2.8.1";
       }
+
+      await writeFile(
+        `${directoryPath}/package.json`,
+        JSON.stringify(object, null, "\t"),
+      );
     }
 
     await writeFile(
