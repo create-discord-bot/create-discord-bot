@@ -23,7 +23,7 @@ jobs:
           uses: actions/setup-node@v3.5.1
           with:
               node-version: 19.3.0
-			  cache: 'npm'
+              cache: 'npm'
         - name: Install Dependencies
           run: npm ci
         - name: Setup Git
