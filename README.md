@@ -14,6 +14,7 @@ CLI tool to bootstrap your discord.js bot with
 - Options between [Typescript](https://www.npmjs.com/package/typescript) and Javascript.
 - Ability to add ESLint/Prettier in one click.
 - Option to use [Pino](https://github.com/pinojs/pino) or the default (console.log/error/warn) logger.
+- 0 Dependencies and only 1mb unpacked, it is extremely fast to download and use.
 
 ## Usage
 
