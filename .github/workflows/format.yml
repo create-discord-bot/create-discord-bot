@@ -1,0 +1,22 @@
+name: Format Code
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/**
+  workflow_dispatch:
+jobs:
+  format_code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v2.6.0
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Format code
+        run: creyD/prettier_action@v4.2
+        with:
+          prettier_options: --write src/**/*.ts
+          only_changed: true
