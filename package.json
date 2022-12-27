@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "compile": "npx ncc build src/index.ts --minify --no-cache --no-source-map-register",
+    "compile": "npx ncc build src/index.ts -m -C --no-source-map-register --target es2021",
     "dev": "npx swc src -d dist --config-file .swcrc",
     "clean": "rmdir /Q /S dist",
     "prestart": "npm run dev",
@@ -43,17 +43,18 @@
     "@types/args": "^5.0.0",
     "@types/inquirer": "^9.0.3",
     "@types/node": "^18.11.17",
+    "@types/prompts": "^2.4.2",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
     "@vercel/ncc": "^0.36.0",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
-    "prettier": "^2.8.1",
-    "typescript": "^4.9.4",
     "giget": "^1.0.0",
-    "inquirer": "^9.1.4",
     "mri": "^1.2.0",
-    "nanospinner": "^1.1.0"
+    "nanospinner": "^1.1.0",
+    "prettier": "^2.8.1",
+    "prompts": "^2.4.2",
+    "typescript": "^4.9.4"
   },
   "bin": "index.js",
   "files": [

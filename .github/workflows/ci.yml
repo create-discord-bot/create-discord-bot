@@ -1,11 +1,5 @@
 name: Continuous Integration
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - src/**
-      - templates/**
   pull_request:
     branches:
       - main
