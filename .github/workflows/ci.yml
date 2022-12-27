@@ -38,5 +38,3 @@ jobs:
         run: npm run check
       - name: ESLint
         run: npm run lint
-      - name: Prettier
-        run: npm run style
