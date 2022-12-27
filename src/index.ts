@@ -88,12 +88,16 @@ const questions: any = [
     type: "toggle",
     name: "prettier",
     initial: true,
+    active: "yes",
+    inactive: "no",
   },
   {
     message: "Do you want to enable ESLint ?",
     type: "toggle",
     name: "eslint",
     initial: true,
+    active: "yes",
+    inactive: "no",
   },
 ];
 
