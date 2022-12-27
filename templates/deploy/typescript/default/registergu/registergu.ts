@@ -26,14 +26,16 @@ const rest = new REST({ version: "10" }).setToken(token);
 if (commands.length > 0) {
   try {
     console.log(
-      `🔃 Started registering ${commands.length} guild (/) commands.`,
+      `🔃 Started registering ${commands.length} guild (/) commands.`
     );
-    const data =
-      (await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
+    const data = (await rest.put(
+      Routes.applicationGuildCommands(clientId, guildId),
+      {
         body: commands,
-      })) as unknown[];
+      }
+    )) as unknown[];
     console.log(
-      `🟢 Successfully registered ${data.length} guild (/) commands.`,
+      `🟢 Successfully registered ${data.length} guild (/) commands.`
     );
   } catch (error) {
     console.error(error);

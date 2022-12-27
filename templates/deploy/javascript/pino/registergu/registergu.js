@@ -18,26 +18,25 @@ const filtered = commandFiles.filter((file) => file.endsWith(".js"));
 
 const length = filtered.length;
 for (let i = 0; i < length; i++) {
-    const { command } = await import(join(commandsPath, filtered[i]));
-    commands.push(command.data.toJSON());
+  const { command } = await import(join(commandsPath, filtered[i]));
+  commands.push(command.data.toJSON());
 }
 
 const rest = new REST({ version: "10" }).setToken(token);
 
 if (commands.length > 0) {
-    try {
-        logger.info(
-            `Started registering ${commands.length} guild (/) commands.`
-        );
-        const data = await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
-            body: commands
-        });
-        logger.info(
-            `Successfully registered ${data.length} guild (/) commands.`
-        );
-    } catch (error) {
-        logger.error(error);
-    }
+  try {
+    logger.info(`Started registering ${commands.length} guild (/) commands.`);
+    const data = await rest.put(
+      Routes.applicationGuildCommands(clientId, guildId),
+      {
+        body: commands,
+      }
+    );
+    logger.info(`Successfully registered ${data.length} guild (/) commands.`);
+  } catch (error) {
+    logger.error(error);
+  }
 } else {
-    logger.warn("There are no guild commands");
+  logger.warn("There are no guild commands");
 }

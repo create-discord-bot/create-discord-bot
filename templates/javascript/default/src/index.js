@@ -14,42 +14,40 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 // Command Init
 (async () => {
-    client.commands = new Collection();
-    const commandsPath = join(__dirname, "commands");
-    const commandFiles = await readdir(commandsPath);
-    commandFiles.filter((file) => file.endsWith(".js"));
+  client.commands = new Collection();
+  const commandsPath = join(__dirname, "commands");
+  const commandFiles = await readdir(commandsPath);
+  commandFiles.filter((file) => file.endsWith(".js"));
 
-    const length = commandFiles.length;
-    for (let i = 0; i < length; i++) {
-        const filePath = join(commandsPath, commandFiles[i]);
-        const { command } = await import(filePath);
+  const length = commandFiles.length;
+  for (let i = 0; i < length; i++) {
+    const filePath = join(commandsPath, commandFiles[i]);
+    const { command } = await import(filePath);
 
-        if ("data" in command && "execute" in command) {
-            client.commands.set(command.data.name, command);
-        } else {
-            console.error(`Invalid Command: ${commandFiles[i]}`);
-        }
+    if ("data" in command && "execute" in command) {
+      client.commands.set(command.data.name, command);
+    } else {
+      console.error(`Invalid Command: ${commandFiles[i]}`);
     }
+  }
 })();
 
 // Events Init
 (async () => {
-    const eventsPath = join(__dirname, "events");
-    const eventFiles = await readdir(eventsPath);
-    const eventFilesFiltered = eventFiles.filter((file) =>
-        file.endsWith(".ts")
-    );
+  const eventsPath = join(__dirname, "events");
+  const eventFiles = await readdir(eventsPath);
+  const eventFilesFiltered = eventFiles.filter((file) => file.endsWith(".ts"));
 
-    const length = eventFilesFiltered.length;
-    for (let i = 0; i < length; i++) {
-        const filePath = join(eventsPath, eventFilesFiltered[i]);
-        const { event } = await import(filePath);
-        if (event.once) {
-            client.once(event.name, (...args) => event.execute(...args));
-        } else {
-            client.on(event.name, (...args) => event.execute(...args));
-        }
+  const length = eventFilesFiltered.length;
+  for (let i = 0; i < length; i++) {
+    const filePath = join(eventsPath, eventFilesFiltered[i]);
+    const { event } = await import(filePath);
+    if (event.once) {
+      client.once(event.name, (...args) => event.execute(...args));
+    } else {
+      client.on(event.name, (...args) => event.execute(...args));
     }
+  }
 })();
 
 client.login(token);

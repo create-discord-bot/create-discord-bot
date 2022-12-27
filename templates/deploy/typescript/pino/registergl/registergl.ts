@@ -26,13 +26,13 @@ const rest = new REST({ version: "10" }).setToken(token);
 if (commands.length > 0) {
   try {
     logger.info(
-      `Started registering ${commands.length} application (/) commands.`,
+      `Started registering ${commands.length} application (/) commands.`
     );
     const data = (await rest.put(Routes.applicationCommands(clientId), {
       body: commands,
     })) as unknown[];
     logger.info(
-      `Successfully registered ${data.length} application (/) commands.`,
+      `Successfully registered ${data.length} application (/) commands.`
     );
   } catch (error) {
     logger.error(error);
