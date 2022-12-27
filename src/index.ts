@@ -20,304 +20,303 @@ let prettier = true;
 let packageManager: string | null = "npm";
 
 const args = mri(argv, {
-	alias: {
-		eslint: ["esl", "es", "e"],
-		prettier: ["prt", "pr", "p"],
-		language: ["lang", "l"],
-		logger: ["log", "lo"],
-		directory: ["dir", "d"],
-		deployment: ["de", "deploy", "dep", "deployments"],
-		packageManager: ["pmg", "pm"],
-	},
+  alias: {
+    eslint: ["esl", "es", "e"],
+    prettier: ["prt", "pr", "p"],
+    language: ["lang", "l"],
+    logger: ["log", "lo"],
+    directory: ["dir", "d"],
+    deployment: ["de", "deploy", "dep", "deployments"],
+    packageManager: ["pmg", "pm"],
+  },
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const questions: any = [];
 
 if (args.directory) {
-	if (args.directory.endsWith("/") || args.directory.endsWith("\\")) {
-		directoryPath = args.directory.slice(0, -1);
-	}
-	directoryPath = args.directory;
+  if (args.directory.endsWith("/") || args.directory.endsWith("\\")) {
+    directoryPath = args.directory.slice(0, -1);
+  }
+  directoryPath = args.directory;
 } else {
-	questions.push({
-		message: "Where would you like to create the discord bot ?",
-		type: "input",
-		name: "directoryPath",
-		default: "./",
-		filter(value: string) {
-			if (value.endsWith("/") || value.endsWith("\\")) {
-				return value.slice(0, -1);
-			}
-			return value;
-		},
-	});
+  questions.push({
+    message: "Where would you like to create the discord bot ?",
+    type: "input",
+    name: "directoryPath",
+    default: "./",
+    filter(value: string) {
+      if (value.endsWith("/") || value.endsWith("\\")) {
+        return value.slice(0, -1);
+      }
+      return value;
+    },
+  });
 }
 
 if (args.language) {
-	language = args.language.toLowerCase();
+  language = args.language.toLowerCase();
 } else {
-	questions.push({
-		message: "What language do you want to use ?",
-		name: "language",
-		type: "list",
-		choices: ["Typescript", "Javascript"],
-		filter(value: string) {
-			return value.toLowerCase();
-		},
-	});
+  questions.push({
+    message: "What language do you want to use ?",
+    name: "language",
+    type: "list",
+    choices: ["Typescript", "Javascript"],
+    filter(value: string) {
+      return value.toLowerCase();
+    },
+  });
 }
 
 if (args.logger) {
-	logger = args.logger.toLowerCase();
+  logger = args.logger.toLowerCase();
 } else {
-	questions.push({
-		message: "What type of logging do you want to use ?",
-		name: "logger",
-		type: "list",
-		choices: ["Default", "Pino"],
-		filter(value: string) {
-			return value.toLowerCase();
-		},
-	});
+  questions.push({
+    message: "What type of logging do you want to use ?",
+    name: "logger",
+    type: "list",
+    choices: ["Default", "Pino"],
+    filter(value: string) {
+      return value.toLowerCase();
+    },
+  });
 }
 
 if (args.deployment) {
-	if (args.deployment.includes(",")) {
-		deployment = args.deployment.split(",");
-	} else {
-		deployment = [args.deployment];
-	}
+  if (args.deployment.includes(",")) {
+    deployment = args.deployment.split(",");
+  } else {
+    deployment = [args.deployment];
+  }
 } else {
-	questions.push({
-		message: "What deployment method(s) do you want to use ?",
-		name: "deployment",
-		type: "checkbox",
-		choices: [
-			{
-				name: "Global",
-				checked: true,
-			},
-			{
-				name: "Guild",
-			},
-		],
-		filter(value: string[]) {
-			return value.map((value) => {
-				if (value === "Global") {
-					return "registergl";
-				} else if (value === "Guild") {
-					return "registergu";
-				}
-			});
-		},
-	});
+  questions.push({
+    message: "What deployment method(s) do you want to use ?",
+    name: "deployment",
+    type: "checkbox",
+    choices: [
+      {
+        name: "Global",
+        checked: true,
+      },
+      {
+        name: "Guild",
+      },
+    ],
+    filter(value: string[]) {
+      return value.map((value) => {
+        if (value === "Global") {
+          return "registergl";
+        } else if (value === "Guild") {
+          return "registergu";
+        }
+      });
+    },
+  });
 }
 
 if (args.prettier) {
-	prettier = JSON.parse(args.prettier);
+  prettier = JSON.parse(args.prettier);
 } else {
-	questions.push({
-		message: "Do you want to enable Prettier ?",
-		type: "confirm",
-		name: "prettier",
-	});
+  questions.push({
+    message: "Do you want to enable Prettier ?",
+    type: "confirm",
+    name: "prettier",
+  });
 }
 
 if (args.eslint) {
-	eslint = JSON.parse(args.eslint);
+  eslint = JSON.parse(args.eslint);
 } else {
-	questions.push({
-		message: "Do you want to enable ESLint ?",
-		type: "confirm",
-		name: "eslint",
-	});
+  questions.push({
+    message: "Do you want to enable ESLint ?",
+    type: "confirm",
+    name: "eslint",
+  });
 }
 
 if (args.packageManager) {
-	packageManager = args.packageManager;
+  packageManager = args.packageManager;
 } else {
-	packageManager = null;
+  packageManager = null;
 }
 
 inquirer
-	.prompt(questions)
-	.then(async (answers) => {
-		if (answers.directoryPath) {
-			directoryPath = answers.directoryPath;
-		}
-		if (answers.language) {
-			language = answers.language;
-		}
-		if (answers.logger) {
-			logger = answers.logger;
-		}
-		if (answers.deployment) {
-			deployment = answers.deployment;
-		}
-		if (answers.eslint) {
-			eslint = answers.eslint;
-		}
-		if (answers.prettier) {
-			prettier = answers.prettier;
-		}
+  .prompt(questions)
+  .then(async (answers) => {
+    if (answers.directoryPath) {
+      directoryPath = answers.directoryPath;
+    }
+    if (answers.language) {
+      language = answers.language;
+    }
+    if (answers.logger) {
+      logger = answers.logger;
+    }
+    if (answers.deployment) {
+      deployment = answers.deployment;
+    }
+    if (answers.eslint) {
+      eslint = answers.eslint;
+    }
+    if (answers.prettier) {
+      prettier = answers.prettier;
+    }
 
-		console.clear();
-		const spinner = createSpinner("Setting up your project...");
-		spinner.start();
-		try {
-			await downloadTemplate(
-				`github:flzyy/create-discord-bot/templates/${language}/${logger}`,
-				{
-					dir: directoryPath,
-					force: true,
-				}
-			);
+    console.clear();
+    const spinner = createSpinner("Setting up your project...");
+    spinner.start();
+    try {
+      await downloadTemplate(
+        `github:flzyy/create-discord-bot/templates/${language}/${logger}`,
+        {
+          dir: directoryPath,
+          force: true,
+        },
+      );
 
-			const length = deployment.length;
-			for (let i = 0; i < length; i++) {
-				await downloadTemplate(
-					`github:flzyy/create-discord-bot/templates/deploy/${language}/${logger}/${deployment[i]}`,
-					{
-						dir: `${directoryPath}/src/`,
-						force: true,
-					}
-				);
-			}
+      const length = deployment.length;
+      for (let i = 0; i < length; i++) {
+        await downloadTemplate(
+          `github:flzyy/create-discord-bot/templates/deploy/${language}/${logger}/${
+            deployment[i]
+          }`,
+          {
+            dir: `${directoryPath}/src/`,
+            force: true,
+          },
+        );
+      }
 
-			const data = await readFile(`${directoryPath}/package.json`);
+      const data = await readFile(`${directoryPath}/package.json`);
 
-			if (data) {
-				const object = JSON.parse(data.toString());
-				let prestart = "";
+      if (data) {
+        const object = JSON.parse(data.toString());
+        let prestart = "";
 
-				for (let i = 0; i < length; i++) {
-					object["scripts"][deployment[i]] = `${
-						language === "typescript" ? "npx tsx" : "node"
-					} src/${deployment[i]}.${
-						language === "typescript" ? "ts" : "js"
-					}`;
-				}
+        for (let i = 0; i < length; i++) {
+          object["scripts"][deployment[i]] = `${
+            language === "typescript" ? "npx tsx" : "node"
+          } src/${deployment[i]}.${language === "typescript" ? "ts" : "js"}`;
+        }
 
-				if (
-					deployment.includes("registergu") &&
-					deployment.includes("registergl")
-				) {
-					prestart += "npm run registergu && npm run registergl";
-				} else if (deployment.includes("registergu")) {
-					prestart += "npm run registergu";
-				} else if (deployment.includes("registergul")) {
-					prestart += "npm run registergl";
-				}
+        if (
+          deployment.includes("registergu") &&
+          deployment.includes("registergl")
+        ) {
+          prestart += "npm run registergu && npm run registergl";
+        } else if (deployment.includes("registergu")) {
+          prestart += "npm run registergu";
+        } else if (deployment.includes("registergul")) {
+          prestart += "npm run registergl";
+        }
 
-				if (logger === "pino") {
-					prestart += "| npx pino-pretty";
-				}
+        if (logger === "pino") {
+          prestart += "| npx pino-pretty";
+        }
 
-				object["scripts"]["prestart"] = prestart;
+        object["scripts"]["prestart"] = prestart;
 
-				if (eslint === true) {
-					await downloadTemplate(
-						`github:flzyy/create-discord-bot/templates/eslint/${language}`,
-						{
-							dir: directoryPath,
-							force: true,
-						}
-					);
+        if (eslint === true) {
+          await downloadTemplate(
+            `github:flzyy/create-discord-bot/templates/eslint/${language}`,
+            {
+              dir: directoryPath,
+              force: true,
+            },
+          );
 
-					if (language === "typescript") {
-						object["devDependencies"][
-							"@typescript-eslint/eslint-plugin"
-						] = "^5.46.1";
-						object["devDependencies"]["@typescript-eslint/parser"] =
-							"^5.46.1";
-						object["devDependencies"]["eslint"] = "^8.29.0";
-					} else {
-						object["devDependencies"]["eslint"] = "^8.29.0";
-					}
-				}
+          if (language === "typescript") {
+            object["devDependencies"][
+              "@typescript-eslint/eslint-plugin"
+            ] = "^5.46.1";
+            object["devDependencies"]["@typescript-eslint/parser"] = "^5.46.1";
+            object["devDependencies"]["eslint"] = "^8.29.0";
+          } else {
+            object["devDependencies"]["eslint"] = "^8.29.0";
+          }
+        }
 
-				if (prettier === true) {
-					await downloadTemplate(
-						"github:flzyy/create-discord-bot/templates/prettier",
-						{
-							dir: directoryPath,
-							force: true,
-						}
-					);
+        if (prettier === true) {
+          await downloadTemplate(
+            "github:flzyy/create-discord-bot/templates/prettier",
+            {
+              dir: directoryPath,
+              force: true,
+            },
+          );
 
-					if (eslint === true) {
-						const data = await readFile(
-							`${directoryPath}/.eslintrc.json`
-						);
+          if (eslint === true) {
+            const data = await readFile(
+              `${directoryPath}/.eslintrc.json`,
+            );
 
-						if (data) {
-							const object = JSON.parse(data.toString());
+            if (data) {
+              const object = JSON.parse(data.toString());
 
-							object["extends"].push("prettier");
+              object["extends"].push("prettier");
 
-							await writeFile(
-								`${directoryPath}/.eslintrc.json`,
-								JSON.stringify(object, null, "\t")
-							);
-						}
-					}
-					object["devDependencies"]["prettier"] = "^2.8.1";
-				}
+              await writeFile(
+                `${directoryPath}/.eslintrc.json`,
+                JSON.stringify(object, null, "\t"),
+              );
+            }
+          }
+          object["devDependencies"]["prettier"] = "^2.8.1";
+        }
 
-				await writeFile(
-					`${directoryPath}/package.json`,
-					JSON.stringify(object, null, "\t")
-				);
-			}
+        await writeFile(
+          `${directoryPath}/package.json`,
+          JSON.stringify(object, null, "\t"),
+        );
+      }
 
-			await writeFile(
-				`${directoryPath}/.env`,
-				'DISCORD_TOKEN="YOUR TOKEN HERE"\nCLIENT_ID="YOUR CLIENT ID HERE"\nGUILD_ID="YOUR GUILD ID HERE"'
-			);
+      await writeFile(
+        `${directoryPath}/.env`,
+        'DISCORD_TOKEN="YOUR TOKEN HERE"\nCLIENT_ID="YOUR CLIENT ID HERE"\nGUILD_ID="YOUR GUILD ID HERE"',
+      );
 
-			spinner.success({ text: "Finished creating your project files!" });
-		} catch (error) {
-			spinner.error({
-				text: `\x1b[90m An error has occured: ${`\x1b[31m${error}\x1b[0m`}`,
-			});
-		}
-		console.clear();
-		const toLog = [
-			"\x1b[1m\x1b[34mNext steps:\x1b[0m",
-			`\n\x1b[37m· cd ${directoryPath}\x1b[0m \x1b[90m(Puts your terminal into the folder)\x1b[0m`,
-			"",
-			"\n\x1b[37m· Fill out .env file\x1b[0m",
-			"\n\x1b[37m· npm start\x1b[0m \x1b[90m(Starts the bot)\x1b[0m",
-		];
+      spinner.success({ text: "Finished creating your project files!" });
+    } catch (error) {
+      spinner.error({
+        text: `\x1b[90m An error has occured: ${`\x1b[31m${error}\x1b[0m`}`,
+      });
+    }
+    console.clear();
+    const toLog = [
+      "\x1b[1m\x1b[34mNext steps:\x1b[0m",
+      `\n\x1b[37m· cd ${directoryPath}\x1b[0m \x1b[90m(Puts your terminal into the folder)\x1b[0m`,
+      "",
+      "\n\x1b[37m· Fill out .env file\x1b[0m",
+      "\n\x1b[37m· npm start\x1b[0m \x1b[90m(Starts the bot)\x1b[0m",
+    ];
 
-		if (packageManager === null) {
-			const answer = await inquirer.prompt({
-				message: "Would you like to install dependencies now ?",
-				type: "list",
-				name: "value",
-				choices: ["npm", "yarn", "pnpm", "No"],
-				filter: (value: string) => {
-					return value.toLowerCase();
-				},
-			});
+    if (packageManager === null) {
+      const answer = await inquirer.prompt({
+        message: "Would you like to install dependencies now ?",
+        type: "list",
+        name: "value",
+        choices: ["npm", "yarn", "pnpm", "No"],
+        filter: (value: string) => {
+          return value.toLowerCase();
+        },
+      });
 
-			packageManager = answer.value;
-		}
+      packageManager = answer.value;
+    }
 
-		if (packageManager !== "no") {
-			execSync(`${packageManager} install --prefix .\\${directoryPath}`, {
-				stdio: [0, 1, 2],
-			});
-		} else {
-			toLog[2] =
-				"\n\x1b[37m· npm install\x1b[0m \x1b[90m(Installs all dependencies required)\x1b[0m";
-		}
+    if (packageManager !== "no") {
+      execSync(`${packageManager} install --prefix .\\${directoryPath}`, {
+        stdio: [0, 1, 2],
+      });
+    } else {
+      toLog[2] =
+        "\n\x1b[37m· npm install\x1b[0m \x1b[90m(Installs all dependencies required)\x1b[0m";
+    }
 
-		console.clear();
-		console.log(...toLog);
-		process.exit(0);
-	})
-	.catch((error) => {
-		console.error("\x1b[31m", error);
-	});
+    console.clear();
+    console.log(...toLog);
+    process.exit(0);
+  })
+  .catch((error) => {
+    console.error("\x1b[31m", error);
+  });

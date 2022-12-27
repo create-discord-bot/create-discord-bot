@@ -15,8 +15,24 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
-      - name: Format code
-        uses: creyD/prettier_action@v4.2
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v3.5.1
         with:
-          prettier_options: --write src/**/*.ts
-          only_changed: true
+          node-version: 19.3.0
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Format code
+        run: npm run fix
+      - name: Setup Git
+        run: |
+          git config --global user.name 'Prettifier'
+          git config --global user.email 'prettifier@users.noreply.github.com'
+      - name: Check for modified files
+        id: git-check
+        run: echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
+      - name: Push changes
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git commit -am "Prettified the code yo."
+          git push

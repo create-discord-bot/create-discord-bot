@@ -23,7 +23,6 @@ jobs:
           uses: actions/setup-node@v3.5.1
           with:
               node-version: 19.3.0
-              cache: 'npm'
         - name: Setup Git
           run: |
             git config user.name '${{secrets.MAINTAINER_NAME}}'
