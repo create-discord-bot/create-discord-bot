@@ -5,6 +5,10 @@ on:
       - main
     paths:
       - src/**
+      - scripts/**
+      - .editorconfig
+      - *.json
+      - .swcrc
   workflow_dispatch:
 jobs:
   format_code:
