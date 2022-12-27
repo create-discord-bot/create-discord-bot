@@ -1,4 +1,4 @@
-# Logs
+.github
 logs
 *.log
 npm-debug.log*
