@@ -231,12 +231,12 @@ try {
           object["devDependencies"] = {
             ...object["devDependencies"],
             ...{
-              "@typescript-eslint/eslint-plugin": "^5.46.1",
-              "@typescript-eslint/parser": "^5.46.1",
+              "@typescript-eslint/eslint-plugin": "^5.47.1",
+              "@typescript-eslint/parser": "^5.47.1",
             },
           };
         }
-        object["devDependencies"]["eslint"] = "^8.29.0";
+        object["devDependencies"]["eslint"] = "^8.30.0";
       }
 
       if (prettier === true) {
