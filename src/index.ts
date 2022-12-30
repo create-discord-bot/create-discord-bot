@@ -208,7 +208,7 @@ try {
         prestart += "npm run registergu && npm run registergl";
       } else if (deployment.includes("registergu")) {
         prestart += "npm run registergu";
-      } else if (deployment.includes("registergul")) {
+      } else if (deployment.includes("registergl")) {
         prestart += "npm run registergl";
       }
 
@@ -228,13 +228,15 @@ try {
         );
 
         if (language === "typescript") {
-          object["devDependencies"]["@typescript-eslint/eslint-plugin"] =
-            "^5.46.1";
-          object["devDependencies"]["@typescript-eslint/parser"] = "^5.46.1";
-          object["devDependencies"]["eslint"] = "^8.29.0";
-        } else {
-          object["devDependencies"]["eslint"] = "^8.29.0";
+          object["devDependencies"] = {
+            ...object["devDependencies"],
+            ...{
+              "@typescript-eslint/eslint-plugin": "^5.46.1",
+              "@typescript-eslint/parser": "^5.46.1",
+            },
+          };
         }
+        object["devDependencies"]["eslint"] = "^8.29.0";
       }
 
       if (prettier === true) {
