@@ -208,7 +208,7 @@ try {
         prestart += "npm run registergu && npm run registergl";
       } else if (deployment.includes("registergu")) {
         prestart += "npm run registergu";
-      } else if (deployment.includes("registergul")) {
+      } else if (deployment.includes("registergl")) {
         prestart += "npm run registergl";
       }
 
