@@ -12,15 +12,14 @@
     "start": "node dist/index.js",
     "poststart": "npm run clean && rmdir /Q /S bot_dev",
     "build": "npm run compile && npx swc scripts/build.ts -d scripts/dist --config-file .swcrc && node scripts/dist/build.js",
-    "prepublishOnly": "npm run build",
     "postpublish": "npm run clean",
     "lint": "eslint ./ --max-warnings 0",
     "style": "prettier ./ --list-different",
     "fix": "npm run lint -- --fix && prettier --write ./",
     "check": "tsc --noEmit",
-    "patch": "npm version patch && cd dist && npm publish && git push --follow-tags",
-    "minor": "npm version minor && cd dist && npm publish && git push --follow-tags",
-    "major": "npm version major && cd dist && npm publish && git push --follow-tags"
+    "patch": "npm version patch && npm run build && cd dist && npm publish && git push --follow-tags",
+    "minor": "npm version minor && npm run build && cd dist && npm publish && git push --follow-tags",
+    "major": "npm version major && npm run build && cd dist && npm publish && git push --follow-tags"
   },
   "repository": {
     "type": "git",
