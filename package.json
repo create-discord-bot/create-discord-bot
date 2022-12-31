@@ -50,7 +50,7 @@
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "giget": "^1.0.0",
-    "larser": "^1.0.5",
+    "larser": "^1.0.6",
     "nanospinner": "^1.1.0",
     "prettier": "^2.8.1",
     "prompts": "^2.4.2",
