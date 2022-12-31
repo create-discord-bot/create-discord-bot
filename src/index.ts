@@ -1,8 +1,8 @@
 #! /usr/bin/env node
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/triple-slash-reference */
 
-import prompts from "prompts";
-import mri from "mri";
+import prompts, { PromptType } from "prompts";
+import { larser } from "larser";
 import { downloadTemplate } from "giget";
 import { createSpinner } from "nanospinner";
 import { readFile, writeFile } from "fs/promises";
@@ -11,7 +11,7 @@ import { execSync } from "child_process";
 console.clear();
 console.log("\x1b[1m\x1b[34mcreate-discord-bot\x1b[0m");
 
-const argv = process.argv.slice(2);
+const argv = process.argv;
 let directoryPath = "";
 let language: "typescript" | "javascript" = "typescript";
 let logger: "default" | "pino" = "pino";
@@ -20,8 +20,9 @@ let eslint = true;
 let prettier = true;
 let packageManager: string | null = "npm";
 
-const args = mri(argv, {
-  alias: {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const args: { _: string[]; [key: string]: any } = larser(argv, {
+  aliases: {
     eslint: ["esl", "es", "e"],
     prettier: ["prt", "pr", "p"],
     language: ["lang", "l"],
@@ -32,10 +33,10 @@ const args = mri(argv, {
   },
 });
 
-const questions: any = [
+const questions = [
   {
     message: "Where would you like to create the discord bot ?",
-    type: "text",
+    type: "text" as PromptType,
     name: "directoryPath",
     initial: "./",
     format: (value: string) => {
@@ -48,7 +49,7 @@ const questions: any = [
   {
     message: "What language do you want to use ?",
     name: "language",
-    type: "select",
+    type: "select" as PromptType,
     choices: [
       { title: "Typescript", value: "typescript" },
       { title: "Javascript", value: "javascript" },
@@ -58,7 +59,7 @@ const questions: any = [
   {
     message: "What type of logging do you want to use ?",
     name: "logger",
-    type: "select",
+    type: "select" as PromptType,
     choices: [
       { title: "Default", value: "default" },
       { title: "Pino", value: "pino" },
@@ -67,7 +68,7 @@ const questions: any = [
   {
     message: "What deployment method(s) do you want to use ?",
     name: "deployment",
-    type: "multiselect",
+    type: "multiselect" as PromptType,
     choices: [
       {
         title: "Global",
@@ -85,7 +86,7 @@ const questions: any = [
   },
   {
     message: "Do you want to enable Prettier ?",
-    type: "toggle",
+    type: "toggle" as PromptType,
     name: "prettier",
     initial: true,
     active: "yes",
@@ -93,7 +94,7 @@ const questions: any = [
   },
   {
     message: "Do you want to enable ESLint ?",
-    type: "toggle",
+    type: "toggle" as PromptType,
     name: "eslint",
     initial: true,
     active: "yes",
