@@ -1,5 +1,8 @@
 # create-discord-bot
 
+**CURRENTLY NOT WORKING, WEIRD BASH ERRORS - ") was unexpected at this time.", IF YOU'RE NOT EXPERIENCING**
+**ERRORS LIKE THIS, PLEASE CREATE AN ISSUE WITH OS INFO.**
+
 [![npm version](https://img.shields.io/npm/v/@flzyy%2Fcreate-discord-bot.svg)](https://www.npmjs.com/package/@flzyy/create-discord-bot)
 [![npm version](https://img.shields.io/npm/dw/@flzyy%2Fcreate-discord-bot.svg)](https://www.npmjs.com/package/@flzyy/create-discord-bot)
 [![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/@flzyy/create-discord-bot)](https://www.npmjs.com/package/@flzyy/create-discord-bot)
