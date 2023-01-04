@@ -194,7 +194,14 @@ try {
 
     if (data) {
       const object = JSON.parse(data.toString());
-      let prestart = "";
+      let prestart =
+        deployment.includes("registergu") && deployment.includes("registergl")
+          ? "npm run registergu && npm run registergl"
+          : deployment.includes("registergu")
+          ? "npm run registergu"
+          : deployment.includes("registergl")
+          ? "npm run registergl"
+          : "";
 
       for (let i = 0; i < length; i++) {
         object["scripts"][deployment[i]] = `${
@@ -202,19 +209,8 @@ try {
         } src/${deployment[i]}.${language === "typescript" ? "ts" : "js"}`;
       }
 
-      if (
-        deployment.includes("registergu") &&
-        deployment.includes("registergl")
-      ) {
-        prestart += "npm run registergu && npm run registergl";
-      } else if (deployment.includes("registergu")) {
-        prestart += "npm run registergu";
-      } else if (deployment.includes("registergl")) {
-        prestart += "npm run registergl";
-      }
-
       if (logger === "pino") {
-        prestart += "| npx pino-pretty";
+        prestart += " | npx pino-pretty";
       }
 
       object["scripts"]["prestart"] = prestart;
