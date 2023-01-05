@@ -144,7 +144,10 @@ if (args.packageManager) {
   packageManager = null;
 }
 
-const answers = await prompts(questions);
+process.on("SIGINT", () => process.exit(0));
+const answers = await prompts(questions, {
+  onCancel: () => process.exit(0),
+});
 
 if (answers.directoryPath) {
   directoryPath = answers.directoryPath;
@@ -287,17 +290,22 @@ const toLog = [
 ];
 
 if (packageManager === null) {
-  const answer = await prompts({
-    message: "Would you like to install dependencies now ?",
-    type: "select",
-    name: "value",
-    choices: [
-      { title: "npm", value: "npm" },
-      { title: "yarn", value: "yarn" },
-      { title: "pnpm", value: "pnpm" },
-      { title: "No", value: "no" },
-    ],
-  });
+  const answer = await prompts(
+    {
+      message: "Would you like to install dependencies now ?",
+      type: "select",
+      name: "value",
+      choices: [
+        { title: "npm", value: "npm" },
+        { title: "yarn", value: "yarn" },
+        { title: "pnpm", value: "pnpm" },
+        { title: "No", value: "no" },
+      ],
+    },
+    {
+      onCancel: () => process.exit(0),
+    }
+  );
 
   packageManager = answer.value;
 }
