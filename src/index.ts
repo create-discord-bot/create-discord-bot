@@ -1,5 +1,4 @@
 #! /usr/bin/env node
-/* eslint-disable @typescript-eslint/triple-slash-reference */
 
 import prompts, { PromptType } from "prompts";
 import { larser } from "larser";
