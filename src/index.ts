@@ -215,7 +215,7 @@ try {
 
       object["scripts"]["prestart"] = prestart;
 
-      if (eslint === true) {
+      if (eslint) {
         await downloadTemplate(
           `github:flzyy/create-discord-bot/templates/eslint/${language}`,
           {
@@ -236,7 +236,7 @@ try {
         object["devDependencies"]["eslint"] = "^8.30.0";
       }
 
-      if (prettier === true) {
+      if (prettier) {
         await downloadTemplate(
           "github:flzyy/create-discord-bot/templates/prettier",
           {
@@ -245,7 +245,7 @@ try {
           }
         );
 
-        if (eslint === true) {
+        if (eslint) {
           const data = await readFile(`${directoryPath}/.eslintrc.json`);
 
           if (data) {
