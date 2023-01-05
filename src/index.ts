@@ -146,175 +146,170 @@ if (args.packageManager) {
 
 const answers = await prompts(questions);
 
-try {
-  if (answers.directoryPath) {
-    directoryPath = answers.directoryPath;
-  }
-  if (answers.language) {
-    language = answers.language;
-  }
-  if (answers.logger) {
-    logger = answers.logger;
-  }
-  if (answers.deployment) {
-    deployment = answers.deployment;
-  }
-  if (answers.eslint) {
-    eslint = answers.eslint;
-  }
-  if (answers.prettier) {
-    prettier = answers.prettier;
-  }
+if (answers.directoryPath) {
+  directoryPath = answers.directoryPath;
+}
+if (answers.language) {
+  language = answers.language;
+}
+if (answers.logger) {
+  logger = answers.logger;
+}
+if (answers.deployment) {
+  deployment = answers.deployment;
+}
+if (answers.eslint) {
+  eslint = answers.eslint;
+}
+if (answers.prettier) {
+  prettier = answers.prettier;
+}
 
-  console.clear();
-  const spinner = createSpinner("Setting up your project...");
-  spinner.start();
-  try {
+console.clear();
+const spinner = createSpinner("Setting up your project...");
+spinner.start();
+try {
+  await downloadTemplate(
+    `github:flzyy/create-discord-bot/templates/${language}/${logger}`,
+    {
+      dir: directoryPath,
+      force: true,
+    }
+  );
+
+  const length = deployment.length;
+  for (let i = 0; i < length; i++) {
     await downloadTemplate(
-      `github:flzyy/create-discord-bot/templates/${language}/${logger}`,
+      `github:flzyy/create-discord-bot/templates/deploy/${language}/${logger}/${deployment[i]}`,
       {
-        dir: directoryPath,
+        dir: `${directoryPath}/src/`,
         force: true,
       }
     );
+  }
 
-    const length = deployment.length;
+  const data = await readFile(`${directoryPath}/package.json`);
+
+  if (data) {
+    const object = JSON.parse(data.toString());
+    let prestart =
+      deployment.includes("registergu") && deployment.includes("registergl")
+        ? "npm run registergu && npm run registergl"
+        : deployment.includes("registergu")
+        ? "npm run registergu"
+        : deployment.includes("registergl")
+        ? "npm run registergl"
+        : "";
+
     for (let i = 0; i < length; i++) {
+      object["scripts"][deployment[i]] = `${
+        language === "typescript" ? "npx tsx" : "node"
+      } src/${deployment[i]}.${language === "typescript" ? "ts" : "js"}`;
+    }
+
+    if (logger === "pino") {
+      prestart += " | npx pino-pretty";
+    }
+
+    object["scripts"]["prestart"] = prestart;
+
+    if (eslint) {
       await downloadTemplate(
-        `github:flzyy/create-discord-bot/templates/deploy/${language}/${logger}/${deployment[i]}`,
+        `github:flzyy/create-discord-bot/templates/eslint/${language}`,
         {
-          dir: `${directoryPath}/src/`,
+          dir: directoryPath,
           force: true,
         }
       );
+
+      if (language === "typescript") {
+        object["devDependencies"] = {
+          ...object["devDependencies"],
+          "@typescript-eslint/eslint-plugin": "^5.47.1",
+          "@typescript-eslint/parser": "^5.47.1",
+        };
+      }
+      object["devDependencies"]["eslint"] = "^8.30.0";
     }
 
-    const data = await readFile(`${directoryPath}/package.json`);
-
-    if (data) {
-      const object = JSON.parse(data.toString());
-      let prestart =
-        deployment.includes("registergu") && deployment.includes("registergl")
-          ? "npm run registergu && npm run registergl"
-          : deployment.includes("registergu")
-          ? "npm run registergu"
-          : deployment.includes("registergl")
-          ? "npm run registergl"
-          : "";
-
-      for (let i = 0; i < length; i++) {
-        object["scripts"][deployment[i]] = `${
-          language === "typescript" ? "npx tsx" : "node"
-        } src/${deployment[i]}.${language === "typescript" ? "ts" : "js"}`;
-      }
-
-      if (logger === "pino") {
-        prestart += " | npx pino-pretty";
-      }
-
-      object["scripts"]["prestart"] = prestart;
+    if (prettier) {
+      await downloadTemplate(
+        "github:flzyy/create-discord-bot/templates/prettier",
+        {
+          dir: directoryPath,
+          force: true,
+        }
+      );
 
       if (eslint) {
-        await downloadTemplate(
-          `github:flzyy/create-discord-bot/templates/eslint/${language}`,
-          {
-            dir: directoryPath,
-            force: true,
-          }
-        );
+        const data = await readFile(`${directoryPath}/.eslintrc.json`);
 
-        if (language === "typescript") {
-          object["devDependencies"] = {
-            ...object["devDependencies"],
-            ...{
-              "@typescript-eslint/eslint-plugin": "^5.47.1",
-              "@typescript-eslint/parser": "^5.47.1",
-            },
-          };
+        if (data) {
+          const object = JSON.parse(data.toString());
+
+          object["extends"].push("prettier");
+
+          await writeFile(
+            `${directoryPath}/.eslintrc.json`,
+            JSON.stringify(object, null, "\t")
+          );
         }
-        object["devDependencies"]["eslint"] = "^8.30.0";
       }
-
-      if (prettier) {
-        await downloadTemplate(
-          "github:flzyy/create-discord-bot/templates/prettier",
-          {
-            dir: directoryPath,
-            force: true,
-          }
-        );
-
-        if (eslint) {
-          const data = await readFile(`${directoryPath}/.eslintrc.json`);
-
-          if (data) {
-            const object = JSON.parse(data.toString());
-
-            object["extends"].push("prettier");
-
-            await writeFile(
-              `${directoryPath}/.eslintrc.json`,
-              JSON.stringify(object, null, "\t")
-            );
-          }
-        }
-        object["devDependencies"]["prettier"] = "^2.8.1";
-      }
-
-      await writeFile(
-        `${directoryPath}/package.json`,
-        JSON.stringify(object, null, "\t")
-      );
+      object["devDependencies"]["prettier"] = "^2.8.1";
     }
 
     await writeFile(
-      `${directoryPath}/.env`,
-      'DISCORD_TOKEN="YOUR TOKEN HERE"\nCLIENT_ID="YOUR CLIENT ID HERE"\nGUILD_ID="YOUR GUILD ID HERE"'
+      `${directoryPath}/package.json`,
+      JSON.stringify(object, null, "\t")
     );
-
-    spinner.success({ text: "Finished creating your project files!" });
-  } catch (error) {
-    spinner.error({
-      text: `\x1b[90m An error has occured: ${`\x1b[31m${error}\x1b[0m`}`,
-    });
-  }
-  console.clear();
-  const toLog = [
-    "\x1b[1m\x1b[34mNext steps:\x1b[0m",
-    `\n\x1b[37m· cd ${directoryPath}\x1b[0m \x1b[90m(Puts your terminal into the folder)\x1b[0m`,
-    "",
-    "\n\x1b[37m· Fill out .env file\x1b[0m",
-    "\n\x1b[37m· npm start\x1b[0m \x1b[90m(Starts the bot)\x1b[0m",
-  ];
-
-  if (packageManager === null) {
-    const answer = await prompts({
-      message: "Would you like to install dependencies now ?",
-      type: "select",
-      name: "value",
-      choices: [
-        { title: "npm", value: "npm" },
-        { title: "yarn", value: "yarn" },
-        { title: "pnpm", value: "pnpm" },
-        { title: "No", value: "no" },
-      ],
-    });
-
-    packageManager = answer.value;
   }
 
-  if (packageManager !== "no") {
-    execSync(`${packageManager} install --prefix .\\${directoryPath}`, {
-      stdio: [0, 1, 2],
-    });
-  } else {
-    toLog[2] =
-      "\n\x1b[37m· npm install\x1b[0m \x1b[90m(Installs all dependencies required)\x1b[0m";
-  }
+  await writeFile(
+    `${directoryPath}/.env`,
+    'DISCORD_TOKEN="YOUR TOKEN HERE"\nCLIENT_ID="YOUR CLIENT ID HERE"\nGUILD_ID="YOUR GUILD ID HERE"'
+  );
 
-  console.clear();
-  console.log(...toLog);
-  process.exit(0);
+  spinner.success({ text: "Finished creating your project files!" });
 } catch (error) {
-  console.error(error);
+  spinner.error({
+    text: `\x1b[90m An error has occured: ${`\x1b[31m${error}\x1b[0m`}`,
+  });
+  process.exit(1);
 }
+
+console.clear();
+const toLog = [
+  "\x1b[1m\x1b[34mNext steps:\x1b[0m",
+  `\n\x1b[37m· cd ${directoryPath}\x1b[0m \x1b[90m(Puts your terminal into the folder)\x1b[0m`,
+  "",
+  "\n\x1b[37m· Fill out .env file\x1b[0m",
+  "\n\x1b[37m· npm start\x1b[0m \x1b[90m(Starts the bot)\x1b[0m",
+];
+
+if (packageManager === null) {
+  const answer = await prompts({
+    message: "Would you like to install dependencies now ?",
+    type: "select",
+    name: "value",
+    choices: [
+      { title: "npm", value: "npm" },
+      { title: "yarn", value: "yarn" },
+      { title: "pnpm", value: "pnpm" },
+      { title: "No", value: "no" },
+    ],
+  });
+
+  packageManager = answer.value;
+}
+
+if (packageManager !== "no") {
+  execSync(`${packageManager} install --prefix .\\${directoryPath}`, {
+    stdio: [0, 1, 2],
+  });
+} else {
+  toLog[2] =
+    "\n\x1b[37m· npm install\x1b[0m \x1b[90m(Installs all dependencies required)\x1b[0m";
+}
+
+console.clear();
+console.log(...toLog);

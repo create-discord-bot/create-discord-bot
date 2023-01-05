@@ -7,18 +7,16 @@
   "scripts": {
     "compile": "npx swc src -d dist --config-file .swcrc",
     "clean": "rmdir /Q /S dist",
-    "prestart": "npm run compile",
-    "start": "node dist/index.js",
-    "poststart": "npm run clean && rmdir /Q /S bot_dev",
+    "start": "tsx src/index.ts",
     "build": "npm run compile && node scripts/build.js",
     "upgrade": "node scripts/upgrade.js",
     "lint": "eslint ./ --max-warnings 0",
     "style": "prettier ./ --list-different",
     "fix": "npm run lint -- --fix && prettier --write ./",
     "check": "tsc --noEmit",
-    "patch": "npm version patch && npm run build && cd dist && npm publish && git push --follow-tags && npm run clean",
-    "minor": "npm version minor && npm run build && cd dist && npm publish && git push --follow-tags && npm run clean",
-    "major": "npm version major && npm run build && cd dist && npm publish && git push --follow-tags && npm run clean"
+    "patch": "npm version patch && npm run build && cd dist && npm publish && cd .. && git push --follow-tags && npm run clean",
+    "minor": "npm version minor && npm run build && cd dist && npm publish && cd .. && git push --follow-tags && npm run clean",
+    "major": "npm version major && npm run build && cd dist && npm publish && cd .. && git push --follow-tags && npm run clean"
   },
   "repository": {
     "type": "git",
@@ -49,6 +47,7 @@
     "eslint-config-prettier": "^8.6.0",
     "npm-check-updates": "^16.6.2",
     "prettier": "^2.8.1",
+    "tsx": "^3.12.1",
     "typescript": "^4.9.4"
   },
   "dependencies": {
