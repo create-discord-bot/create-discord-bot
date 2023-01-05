@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "compile": "npx ncc build src/index.ts -m -C --no-source-map-register --target es2021",
+    "compile": "npx ncc build src/index.ts -m -C",
     "dev": "npx swc src -d dist --config-file .swcrc",
     "clean": "rmdir /Q /S dist",
     "prestart": "npm run dev",
