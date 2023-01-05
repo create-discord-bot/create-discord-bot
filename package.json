@@ -5,10 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "compile": "npx ncc build src/index.ts -m -C",
-    "dev": "npx swc src -d dist --config-file .swcrc",
+    "compile": "npx swc src -d dist --config-file .swcrc",
     "clean": "rmdir /Q /S dist",
-    "prestart": "npm run dev",
+    "prestart": "npm run compile",
     "start": "node dist/index.js",
     "poststart": "npm run clean && rmdir /Q /S bot_dev",
     "build": "npm run compile && node scripts/build.js",
@@ -46,16 +45,17 @@
     "@types/prompts": "^2.4.2",
     "@typescript-eslint/eslint-plugin": "^5.48.0",
     "@typescript-eslint/parser": "^5.48.0",
-    "@vercel/ncc": "^0.36.0",
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^8.6.0",
+    "npm-check-updates": "^16.6.2",
+    "prettier": "^2.8.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
     "giget": "^1.0.0",
     "larser": "^1.0.11",
     "nanospinner": "^1.1.0",
-    "npm-check-updates": "^16.6.2",
-    "prettier": "^2.8.1",
-    "prompts": "^2.4.2",
-    "typescript": "^4.9.4"
+    "prompts": "^2.4.2"
   },
   "bin": "index.js",
   "files": [

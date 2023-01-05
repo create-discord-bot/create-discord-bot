@@ -1,8 +1,5 @@
 # create-discord-bot
 
-**CURRENTLY NOT WORKING, WEIRD BASH ERRORS - ") was unexpected at this time.", IF YOU'RE NOT EXPERIENCING**
-**ERRORS LIKE THIS, PLEASE CREATE AN ISSUE WITH OS INFO.**
-
 [![npm version](https://img.shields.io/npm/v/@flzyy%2Fcreate-discord-bot.svg)](https://www.npmjs.com/package/@flzyy/create-discord-bot)
 [![npm version](https://img.shields.io/npm/dw/@flzyy%2Fcreate-discord-bot.svg)](https://www.npmjs.com/package/@flzyy/create-discord-bot)
 [![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/@flzyy/create-discord-bot)](https://www.npmjs.com/package/@flzyy/create-discord-bot)
@@ -17,7 +14,7 @@ CLI tool to bootstrap your discord.js bot with
 - Options between [Typescript](https://www.npmjs.com/package/typescript) and Javascript.
 - Ability to add ESLint/Prettier in one click.
 - Option to use [Pino](https://github.com/pinojs/pino) or the default (console.log/error/warn) logger.
-- 0 Dependencies and only a few kilobytes unpacked, it is extremely fast to download and use.
+- 4 Dependencies and only a few kilobytes unpacked, this makes it extremely fast to download and use.
 
 ## Usage
 
