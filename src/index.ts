@@ -11,7 +11,6 @@ import { execSync } from "child_process";
 console.clear();
 console.log("\x1b[1m\x1b[34mcreate-discord-bot\x1b[0m");
 
-const argv = process.argv;
 let directoryPath = "";
 let language: "typescript" | "javascript" = "typescript";
 let logger: "default" | "pino" = "pino";
@@ -21,7 +20,7 @@ let prettier = true;
 let packageManager: string | null = "npm";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const args: { _: string[]; [key: string]: any } = larser(argv, {
+const args: { _: string[]; [key: string]: any } = larser(process.argv, {
   aliases: {
     eslint: ["esl", "es", "e"],
     prettier: ["prt", "pr", "p"],
