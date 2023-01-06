@@ -38,7 +38,7 @@ const answers = await prompts(
     {
       message: "Where would you like to create the discord bot ?",
       type: args.d ? (false as Falsy) : ("text" as PromptType),
-      name: "directoryPath",
+      name: "d",
       initial: "./",
       format: (value: string) => {
         if (value.endsWith("/") || value.endsWith("\\")) {
@@ -49,7 +49,7 @@ const answers = await prompts(
     },
     {
       message: "What language do you want to use ?",
-      name: "language",
+      name: "l",
       type: args.l ? (false as Falsy) : ("select" as PromptType),
       choices: [
         { title: "Typescript", value: "typescript" },
@@ -59,7 +59,7 @@ const answers = await prompts(
     },
     {
       message: "What type of logging do you want to use ?",
-      name: "logger",
+      name: "o",
       type: args.lo ? (false as Falsy) : ("select" as PromptType),
       choices: [
         { title: "Default", value: "default" },
@@ -68,17 +68,17 @@ const answers = await prompts(
     },
     {
       message: "What deployment method(s) do you want to use ?",
-      name: "deployment",
+      name: "q",
       type: args.de ? (false as Falsy) : ("multiselect" as PromptType),
       choices: [
         {
           title: "Global",
           selected: true,
-          value: "registergl",
+          value: "global",
         },
         {
           title: "Guild",
-          value: "registergu",
+          value: "guild",
         },
       ],
       instructions: false,
@@ -88,7 +88,7 @@ const answers = await prompts(
     {
       message: "Do you want to enable Prettier ?",
       type: args.p ? (false as Falsy) : ("toggle" as PromptType),
-      name: "prettier",
+      name: "p",
       initial: true,
       active: "yes",
       inactive: "no",
@@ -96,7 +96,7 @@ const answers = await prompts(
     {
       message: "Do you want to enable ESLint ?",
       type: args.e ? (false as Falsy) : ("toggle" as PromptType),
-      name: "eslint",
+      name: "e",
       initial: true,
       active: "yes",
       inactive: "no",
@@ -107,12 +107,12 @@ const answers = await prompts(
   }
 );
 
-if (answers.directoryPath) directoryPath = answers.directoryPath;
-if (answers.language) args.l = answers.language;
-if (answers.logger) args.lo = answers.logger;
-if (answers.deployment) deployment = answers.deployment;
-if (answers.eslint) eslint = answers.eslint;
-if (answers.prettier) prettier = answers.prettier;
+if (answers.d) directoryPath = answers.d;
+if (answers.l) args.l = answers.l;
+if (answers.o) args.lo = answers.o;
+if (answers.q) deployment = answers.q;
+if (answers.e) eslint = answers.e;
+if (answers.p) prettier = answers.p;
 
 console.clear();
 const spinner = createSpinner("Setting up your project...");
@@ -140,26 +140,12 @@ try {
 
   if (data) {
     const object = JSON.parse(data);
-    let prestart =
-      deployment.includes("registergu") && deployment.includes("registergl")
-        ? "npm run registergu && npm run registergl"
-        : deployment.includes("registergu")
-        ? "npm run registergu"
-        : deployment.includes("registergl")
-        ? "npm run registergl"
-        : "";
 
     for (let i = 0; i < deployment.length; i++) {
-      object["scripts"][deployment[i]] = `${
+      object["scripts"][`deploy:${deployment[i]}`] = `${
         args.l === "typescript" ? "npx tsx" : "node"
       } src/${deployment[i]}.${args.l === "typescript" ? "ts" : "js"}`;
     }
-
-    if (args.lo === "pino") {
-      prestart += " | npx pino-pretty";
-    }
-
-    object["scripts"]["prestart"] = prestart;
 
     if (eslint) {
       await downloadTemplate(
