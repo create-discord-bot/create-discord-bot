@@ -23,12 +23,8 @@ const args: { _: string[]; [key: string]: any } = larser(process.argv, {
   },
 });
 
-let directoryPath = args.d
-  ? args.d.endsWith("/") || args.d.endsWith("/")
-    ? args.d.slice(0, -1)
-    : args.d
-  : "";
-let deployment: string[] = args.de ? args.de.split(",") : [];
+let directoryPath = args.d?.replace(/\/$/, "");
+let deployment: string[] = args.de?.split(",");
 let eslint = args.e ? JSON.parse(args.e) : true;
 let prettier = args.p ? JSON.parse(args.p) : true;
 
@@ -41,10 +37,7 @@ const answers = await prompts(
       name: "d",
       initial: "./",
       format: (value: string) => {
-        if (value.endsWith("/") || value.endsWith("\\")) {
-          return value.slice(0, -1);
-        }
-        return value;
+        return value.replace(/\/$/, "");
       },
     },
     {
