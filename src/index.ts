@@ -235,7 +235,7 @@ if (!args.pm) {
 }
 
 if (args.pm !== "no") {
-  execSync(`${args.pm} install --prefix .\\${directoryPath}`, {
+  execSync(`cd ${directoryPath} && ${args.pm} install`, {
     stdio: [0, 1, 2],
   });
 } else {
