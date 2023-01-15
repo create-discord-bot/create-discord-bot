@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 import prompts, { Falsy, PromptType } from "prompts";
-import { larser } from "larser";
+import larser from "larser";
 import { downloadTemplate } from "giget";
 import { createSpinner } from "nanospinner";
 import { readFile, writeFile } from "fs/promises";

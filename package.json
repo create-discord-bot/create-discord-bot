@@ -46,13 +46,13 @@
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^8.6.0",
     "npm-check-updates": "^16.6.2",
-    "prettier": "^2.8.2",
+    "prettier": "^2.8.3",
     "tsx": "^3.12.2",
     "typescript": "^4.9.4"
   },
   "dependencies": {
     "giget": "^1.0.0",
-    "larser": "^1.0.13",
+    "larser": "^1.0.17",
     "nanospinner": "^1.1.0",
     "prompts": "^2.4.2"
   },
