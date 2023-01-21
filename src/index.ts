@@ -152,11 +152,11 @@ try {
       if (args.l === "typescript") {
         object["devDependencies"] = {
           ...object["devDependencies"],
-          "@typescript-eslint/eslint-plugin": "^5.47.1",
-          "@typescript-eslint/parser": "^5.47.1",
+          "@typescript-eslint/eslint-plugin": "^5.48.2",
+          "@typescript-eslint/parser": "^5.48.2",
         };
       }
-      object["devDependencies"]["eslint"] = "^8.30.0";
+      object["devDependencies"]["eslint"] = "^8.32.0";
     }
 
     if (prettier) {
@@ -182,7 +182,7 @@ try {
           );
         }
       }
-      object["devDependencies"]["prettier"] = "^2.8.1";
+      object["devDependencies"]["prettier"] = "^2.8.3";
     }
 
     await writeFile(
