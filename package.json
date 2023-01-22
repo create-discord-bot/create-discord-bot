@@ -8,15 +8,15 @@
     "compile": "swc src -d dist --config-file .swcrc",
     "clean": "rmdir /Q /S dist",
     "start": "tsx src/index.ts",
-    "build": "pnpm run compile && node scripts/build.js",
+    "build": "npm run compile && node scripts/build.js",
     "upgrade": "node scripts/upgrade.js",
     "lint": "eslint ./ --max-warnings 0",
     "style": "prettier ./ --list-different",
     "fix": "npm run lint -- --fix && prettier --write ./",
     "check": "tsc --noEmit",
-    "patch": "npm version patch && npm run build && cd dist && pnpm publish && cd .. && git push --follow-tags && pnpm run clean",
-    "minor": "npm version minor && npm run build && cd dist && pnpm publish && cd .. && git push --follow-tags && pnpm run clean",
-    "major": "npm version major && npm run build && cd dist && pnpm publish && cd .. && git push --follow-tags && pnpm run clean"
+    "patch": "npm version patch && npm run build && cd dist && npm publish && cd .. && git push --follow-tags && npm run clean",
+    "minor": "npm version minor && npm run build && cd dist && npm publish && cd .. && git push --follow-tags && npm run clean",
+    "major": "npm version major && npm run build && cd dist && npm publish && cd .. && git push --follow-tags && npm run clean"
   },
   "repository": {
     "type": "git",
