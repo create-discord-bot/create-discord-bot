@@ -131,65 +131,63 @@ try {
 
   const data = await readFile(`${directoryPath}/package.json`, "utf-8");
 
-  if (data) {
-    const object = JSON.parse(data);
+  const object = JSON.parse(data);
 
-    for (let i = 0; i < deployment.length; i++) {
-      object["scripts"][`deploy:${deployment[i]}`] = `${
-        args.l === "typescript" ? "npx tsx" : "node"
-      } src/${deployment[i]}.${args.l === "typescript" ? "ts" : "js"}`;
+  for (let i = 0; i < deployment.length; i++) {
+    object["scripts"][`deploy:${deployment[i]}`] = `${
+      args.l === "typescript" ? "npx tsx" : "node"
+    } src/${deployment[i]}.${args.l === "typescript" ? "ts" : "js"}`;
+  }
+
+  if (eslint) {
+    await downloadTemplate(
+      `github:flzyy/create-discord-bot/templates/eslint/${args.l}`,
+      {
+        dir: directoryPath,
+        force: true,
+      }
+    );
+
+    if (args.l === "typescript") {
+      object["devDependencies"] = {
+        ...object["devDependencies"],
+        "@typescript-eslint/eslint-plugin": "^5.48.2",
+        "@typescript-eslint/parser": "^5.48.2",
+      };
     }
+    object["devDependencies"]["eslint"] = "^8.32.0";
+  }
+
+  if (prettier) {
+    await downloadTemplate(
+      "github:flzyy/create-discord-bot/templates/prettier",
+      {
+        dir: directoryPath,
+        force: true,
+      }
+    );
 
     if (eslint) {
-      await downloadTemplate(
-        `github:flzyy/create-discord-bot/templates/eslint/${args.l}`,
-        {
-          dir: directoryPath,
-          force: true,
-        }
-      );
+      const data = await readFile(`${directoryPath}/.eslintrc.json`, "utf-8");
 
-      if (args.l === "typescript") {
-        object["devDependencies"] = {
-          ...object["devDependencies"],
-          "@typescript-eslint/eslint-plugin": "^5.48.2",
-          "@typescript-eslint/parser": "^5.48.2",
-        };
+      if (data) {
+        const object = JSON.parse(data);
+
+        object["extends"].push("prettier");
+
+        await writeFile(
+          `${directoryPath}/.eslintrc.json`,
+          JSON.stringify(object, null, "\t")
+        );
       }
-      object["devDependencies"]["eslint"] = "^8.32.0";
     }
-
-    if (prettier) {
-      await downloadTemplate(
-        "github:flzyy/create-discord-bot/templates/prettier",
-        {
-          dir: directoryPath,
-          force: true,
-        }
-      );
-
-      if (eslint) {
-        const data = await readFile(`${directoryPath}/.eslintrc.json`, "utf-8");
-
-        if (data) {
-          const object = JSON.parse(data);
-
-          object["extends"].push("prettier");
-
-          await writeFile(
-            `${directoryPath}/.eslintrc.json`,
-            JSON.stringify(object, null, "\t")
-          );
-        }
-      }
-      object["devDependencies"]["prettier"] = "^2.8.3";
-    }
-
-    await writeFile(
-      `${directoryPath}/package.json`,
-      JSON.stringify(object, null, "\t")
-    );
+    object["devDependencies"]["prettier"] = "^2.8.3";
   }
+
+  await writeFile(
+    `${directoryPath}/package.json`,
+    JSON.stringify(object, null, "\t")
+  );
 
   await writeFile(
     `${directoryPath}/.env`,
