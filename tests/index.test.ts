@@ -1,5 +1,5 @@
 import { it } from "node:test";
-import { execa } from "execa";
+import { sync } from "cross-spawn";
 import { existsSync } from "node:fs";
 import { randomBytes } from "node:crypto";
 import { rm } from "node:fs/promises";
@@ -32,7 +32,7 @@ const filesShouldExist = [
   ".prettierrc.json",
 ];
 
-await execa("npx", ["tsx", "src/index.ts", "--", ...options]);
+sync("npx", ["tsx", "src/index.ts", "--", ...options]);
 
 process.chdir(directory);
 filesShouldExist.forEach((value) => {
