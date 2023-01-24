@@ -42,19 +42,19 @@
     "@types/inquirer": "^9.0.3",
     "@types/node": "^18.11.18",
     "@types/prompts": "^2.4.2",
-    "@typescript-eslint/eslint-plugin": "^5.48.2",
-    "@typescript-eslint/parser": "^5.48.2",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "execa": "^6.1.0",
-    "npm-check-updates": "^16.6.2",
+    "npm-check-updates": "^16.6.3",
     "prettier": "^2.8.3",
     "tsx": "^3.12.2",
     "typescript": "^4.9.4"
   },
   "dependencies": {
     "giget": "^1.0.0",
-    "larser": "^1.0.17",
+    "larser": "^1.0.24",
     "nanospinner": "^1.1.0",
     "prompts": "^2.4.2"
   },
