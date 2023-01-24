@@ -111,23 +111,36 @@ console.clear();
 const spinner = createSpinner("Setting up your project...");
 spinner.start();
 try {
-  await downloadTemplate(
-    `github:flzyy/create-discord-bot/templates/${args.l}/${args.lo}`,
-    {
+  const base = `github:flzyy/create-discord-bot/templates/${args.l}/${args.lo}`;
+  const download = [
+    downloadTemplate(base, {
       dir: directoryPath,
       force: true,
-    }
-  );
-
-  for (let i = 0; i < deployment.length; i++) {
-    await downloadTemplate(
-      `github:flzyy/create-discord-bot/templates/deploy/${args.l}/${args.lo}/${deployment[i]}`,
-      {
+    }),
+    deployment.map((value) =>
+      downloadTemplate(`${base}/${value}`, {
         dir: `${directoryPath}/src/`,
         force: true,
-      }
-    );
-  }
+      })
+    ),
+    eslint
+      ? downloadTemplate(
+          `github:flzyy/create-discord-bot/templates/eslint/${args.l}`,
+          {
+            dir: directoryPath,
+            force: true,
+          }
+        )
+      : Promise.resolve(),
+    prettier
+      ? downloadTemplate("github:flzyy/create-discord-bot/templates/prettier", {
+          dir: directoryPath,
+          force: true,
+        })
+      : Promise.resolve(),
+  ];
+
+  await Promise.all(download);
 
   const data = await readFile(`${directoryPath}/package.json`, "utf-8");
 
@@ -140,14 +153,6 @@ try {
   }
 
   if (eslint) {
-    await downloadTemplate(
-      `github:flzyy/create-discord-bot/templates/eslint/${args.l}`,
-      {
-        dir: directoryPath,
-        force: true,
-      }
-    );
-
     if (args.l === "typescript") {
       object["devDependencies"] = {
         ...object["devDependencies"],
@@ -159,14 +164,6 @@ try {
   }
 
   if (prettier) {
-    await downloadTemplate(
-      "github:flzyy/create-discord-bot/templates/prettier",
-      {
-        dir: directoryPath,
-        force: true,
-      }
-    );
-
     if (eslint) {
       const data = await readFile(`${directoryPath}/.eslintrc.json`, "utf-8");
 
@@ -184,15 +181,16 @@ try {
     object["devDependencies"]["prettier"] = "^2.8.3";
   }
 
-  await writeFile(
-    `${directoryPath}/package.json`,
-    JSON.stringify(object, null, "\t")
-  );
-
-  await writeFile(
-    `${directoryPath}/.env`,
-    'DISCORD_TOKEN="YOUR TOKEN HERE"\nCLIENT_ID="YOUR CLIENT ID HERE"\nGUILD_ID="YOUR GUILD ID HERE"'
-  );
+  await Promise.all([
+    writeFile(
+      `${directoryPath}/package.json`,
+      JSON.stringify(object, null, "\t")
+    ),
+    writeFile(
+      `${directoryPath}/.env`,
+      'DISCORD_TOKEN="YOUR TOKEN HERE"\nCLIENT_ID="YOUR CLIENT ID HERE"\nGUILD_ID="YOUR GUILD ID HERE"'
+    ),
+  ]);
 
   spinner.success({ text: "Finished creating your project files!" });
 } catch (error) {
