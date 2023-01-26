@@ -37,7 +37,7 @@
   "homepage": "https://create-discord-bot.github.io/",
   "devDependencies": {
     "@swc/cli": "^0.1.59",
-    "@swc/core": "^1.3.27",
+    "@swc/core": "^1.3.29",
     "@types/args": "^5.0.0",
     "@types/cross-spawn": "^6.0.2",
     "@types/inquirer": "^9.0.3",
