@@ -203,10 +203,10 @@ try {
 console.clear();
 const toLog = [
   "\x1b[1;34mNext steps:\x1b[0m",
-  `\n\x1b[37m· cd ${directoryPath}\x1b[0m \x1b[90m(Puts your terminal into the folder)\x1b[0m`,
+  `\n· cd ${directoryPath} \x1b[90m(Puts your terminal into the folder)\x1b[0m`,
   "",
-  "\n\x1b[37m· Fill out .env file\x1b[0m",
-  "\n\x1b[37m· npm start\x1b[0m \x1b[90m(Starts the bot)\x1b[0m",
+  "\n· Fill out .env file",
+  "\n· npm start \x1b[90m(Starts the bot)\x1b[0m",
 ];
 
 if (!args.pm) {
