@@ -214,12 +214,12 @@ if (!args.pm) {
     {
       message: "Would you like to install dependencies now ?",
       type: "select",
-      name: "value",
+      name: "v",
       choices: [
         { title: "npm", value: "npm" },
         { title: "yarn", value: "yarn" },
         { title: "pnpm", value: "pnpm" },
-        { title: "No", value: "no" },
+        { title: "No", value: "n" },
       ],
     },
     {
@@ -227,10 +227,10 @@ if (!args.pm) {
     }
   );
 
-  args.pm = answer.value;
+  args.pm = answer.v;
 }
 
-if (args.pm !== "no") {
+if (args.pm !== "n") {
   execSync(`cd ${directoryPath} && ${args.pm} install`, {
     stdio: [0, 1, 2],
   });
