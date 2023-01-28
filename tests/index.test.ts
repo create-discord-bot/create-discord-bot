@@ -7,7 +7,7 @@ import { rm } from "node:fs/promises";
 const directory = `test_case-${randomBytes(4).toString("hex")}`;
 
 const options = [
-  "--e=true",
+  "--e=false",
   "--p=true",
   "--l=typescript",
   "--lo=pino",
@@ -26,17 +26,22 @@ const filesShouldExist = [
   "src/events/ready.ts",
   "src/global.ts",
   "src/guild.ts",
-  ".eslintignore",
-  ".eslintrc.json",
   ".prettierignore",
   ".prettierrc.json",
 ];
+
+const filesShouldntExist = [".eslintignore", ".eslintrc.json"];
 
 sync("npx", ["tsx", "src/index.ts", "--", ...options]);
 
 process.chdir(directory);
 filesShouldExist.forEach((value) => {
   it(`${value} should exist`, () => {
+    existsSync(value);
+  });
+});
+filesShouldntExist.forEach((value) => {
+  it(`${value} shouldn't exist`, () => {
     existsSync(value);
   });
 });
