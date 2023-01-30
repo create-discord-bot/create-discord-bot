@@ -111,36 +111,32 @@ console.clear();
 const spinner = createSpinner("Setting up your project...");
 spinner.start();
 try {
-  const base = `github:flzyy/create-discord-bot/templates/${args.l}/${args.lo}`;
-  const download = [
-    downloadTemplate(base, {
+  const base = `github:flzyy/create-discord-bot/templates/`;
+
+  await Promise.all([
+    downloadTemplate(`${base}${args.l}/${args.lo}`, {
       dir: directoryPath,
       force: true,
     }),
     deployment.map((value) =>
-      downloadTemplate(`${base}/${value}`, {
+      downloadTemplate(`${base}${args.l}/${args.lo}/${value}`, {
         dir: `${directoryPath}/src/`,
         force: true,
       })
     ),
     eslint
-      ? downloadTemplate(
-          `github:flzyy/create-discord-bot/templates/eslint/${args.l}`,
-          {
-            dir: directoryPath,
-            force: true,
-          }
-        )
-      : Promise.resolve(),
-    prettier
-      ? downloadTemplate("github:flzyy/create-discord-bot/templates/prettier", {
+      ? downloadTemplate(`${base}eslint/${args.l}`, {
           dir: directoryPath,
           force: true,
         })
       : Promise.resolve(),
-  ];
-
-  await Promise.all(download);
+    prettier
+      ? downloadTemplate(`${base}prettier`, {
+          dir: directoryPath,
+          force: true,
+        })
+      : Promise.resolve(),
+  ]);
 
   const data = await readFile(`${directoryPath}/package.json`, "utf-8");
 
@@ -167,16 +163,14 @@ try {
     if (eslint) {
       const data = await readFile(`${directoryPath}/.eslintrc.json`, "utf-8");
 
-      if (data) {
-        const object = JSON.parse(data);
+      const object = JSON.parse(data);
 
-        object["extends"].push("prettier");
+      object["extends"].push("prettier");
 
-        await writeFile(
-          `${directoryPath}/.eslintrc.json`,
-          JSON.stringify(object, null, "\t")
-        );
-      }
+      await writeFile(
+        `${directoryPath}/.eslintrc.json`,
+        JSON.stringify(object, null, "\t")
+      );
     }
     object["devDependencies"]["prettier"] = "^2.8.3";
   }
@@ -195,7 +189,7 @@ try {
   spinner.success({ text: "Finished creating your project files!" });
 } catch (error) {
   spinner.error({
-    text: `\x1b[90m An error has occured: ${`\x1b[31m${error}\x1b[0m`}`,
+    text: `\x1b[90mAn error has occured: ${`\x1b[31m${error}\x1b[0m`}`,
   });
   process.exit(1);
 }
