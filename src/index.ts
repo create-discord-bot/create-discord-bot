@@ -102,7 +102,7 @@ const answers = await prompts(
 
 if (answers.d) directoryPath = answers.d;
 if (answers.l) args.l = answers.l;
-if (answers.o) args.lo = answers.o;
+if (answers.o) args.o = answers.o;
 if (answers.m) deployment = answers.m;
 if (answers.e) eslint = answers.e;
 if (answers.p) prettier = answers.p;
@@ -114,12 +114,12 @@ try {
   const base = `github:flzyy/create-discord-bot/templates/`;
 
   await Promise.all([
-    downloadTemplate(`${base}${args.l}/${args.lo}`, {
+    downloadTemplate(`${base}${args.l}/${args.o}`, {
       dir: directoryPath,
       force: true,
     }),
     deployment.map((value) =>
-      downloadTemplate(`${base}${args.l}/${args.lo}/${value}`, {
+      downloadTemplate(`${base}${args.l}/${args.o}/${value}`, {
         dir: `${directoryPath}/src/`,
         force: true,
       })
@@ -201,26 +201,24 @@ const toLog = [
   "\n· npm start \x1b[90m(Starts the bot)\x1b[0m",
 ];
 
-if (!args.pm) {
-  const answer = await prompts(
-    {
-      message: "Would you like to install dependencies now ?",
-      type: "select",
-      name: "v",
-      choices: [
-        { title: "npm", value: "npm" },
-        { title: "yarn", value: "yarn" },
-        { title: "pnpm", value: "pnpm" },
-        { title: "No", value: "n" },
-      ],
-    },
-    {
-      onCancel: () => process.exit(0),
-    }
-  );
+const answer = await prompts(
+  {
+    message: "Would you like to install dependencies now ?",
+    type: args.m ? (false as Falsy) : "select",
+    name: "v",
+    choices: [
+      { title: "npm", value: "npm" },
+      { title: "yarn", value: "yarn" },
+      { title: "pnpm", value: "pnpm" },
+      { title: "No", value: "n" },
+    ],
+  },
+  {
+    onCancel: () => process.exit(0),
+  }
+);
 
-  args.pm = answer.v;
-}
+args.pm = answer.v;
 
 if (args.pm !== "n") {
   execSync(`cd ${directoryPath} && ${args.pm} install`, {
@@ -231,5 +229,4 @@ if (args.pm !== "n") {
     "\n\x1b[37m· npm install\x1b[0m \x1b[90m(Installs all dependencies required)\x1b[0m";
 }
 
-console.clear();
 console.log(...toLog);
