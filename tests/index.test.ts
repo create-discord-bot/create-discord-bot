@@ -10,10 +10,10 @@ const options = [
   "--e=false",
   "--p=true",
   "--l=typescript",
-  "--lo=pino",
-  "--de=global,guild",
+  "--o=pino",
+  "--m=global,guild",
   `--d=${directory}`,
-  "--pm=no",
+  "--g=no",
 ];
 
 const filesShouldExist = [

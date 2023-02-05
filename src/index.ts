@@ -13,18 +13,18 @@ console.log("\x1b[1;34mcreate-discord-bot\x1b[0m");
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const args: { _: string[]; [key: string]: any } = larser(process.argv, {
   aliases: {
-    eslint: ["esl", "es", "e"],
-    prettier: ["prt", "pr", "p"],
-    language: ["lang", "l"],
-    logger: ["log", "lo"],
-    directory: ["dir", "d"],
-    deployment: ["de", "deploy", "dep", "deployments"],
-    packageManager: ["pmg", "pm"],
+    eslint: ["e"],
+    prettier: ["p"],
+    language: ["l"],
+    logger: ["o"],
+    directory: ["d"],
+    deployment: ["m"],
+    packageManager: ["g"],
   },
 });
 
 let directoryPath = args.d?.replace(/\/$/, "");
-let deployment: string[] = args.de?.split(",");
+let deployment: string[] = args.m?.split(",");
 let eslint = args.e ? JSON.parse(args.e) : true;
 let prettier = args.p ? JSON.parse(args.p) : true;
 
@@ -53,7 +53,7 @@ const answers = await prompts(
     {
       message: "What type of logging do you want to use ?",
       name: "o",
-      type: args.lo ? (false as Falsy) : ("select" as PromptType),
+      type: args.o ? (false as Falsy) : ("select" as PromptType),
       choices: [
         { title: "Default", value: "default" },
         { title: "Pino", value: "pino" },
@@ -61,8 +61,8 @@ const answers = await prompts(
     },
     {
       message: "What deployment method(s) do you want to use ?",
-      name: "q",
-      type: args.de ? (false as Falsy) : ("multiselect" as PromptType),
+      name: "m",
+      type: args.m ? (false as Falsy) : ("multiselect" as PromptType),
       choices: [
         {
           title: "Global",
@@ -103,7 +103,7 @@ const answers = await prompts(
 if (answers.d) directoryPath = answers.d;
 if (answers.l) args.l = answers.l;
 if (answers.o) args.lo = answers.o;
-if (answers.q) deployment = answers.q;
+if (answers.m) deployment = answers.m;
 if (answers.e) eslint = answers.e;
 if (answers.p) prettier = answers.p;
 
