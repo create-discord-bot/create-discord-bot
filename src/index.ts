@@ -3,7 +3,7 @@
 import prompts, { Falsy, PromptType } from "prompts";
 import larser from "larser";
 import { downloadTemplate } from "giget";
-import { createSpinner } from "nanospinner";
+import Spinner from "kisig";
 import { readFile, writeFile } from "fs/promises";
 import { execSync } from "child_process";
 
@@ -108,8 +108,8 @@ if (answers.e) eslint = answers.e;
 if (answers.p) prettier = answers.p;
 
 console.clear();
-const spinner = createSpinner("Setting up your project...");
-spinner.start();
+const spinner = new Spinner("Setting up your project...");
+
 try {
   const base = `github:flzyy/create-discord-bot/templates/`;
 
@@ -186,11 +186,9 @@ try {
     ),
   ]);
 
-  spinner.success({ text: "Finished creating your project files!" });
+  spinner.success("Finished creating your project files!");
 } catch (error) {
-  spinner.error({
-    text: `\x1b[90mAn error has occured: ${`\x1b[31m${error}\x1b[0m`}`,
-  });
+  spinner.error(`An error has occured: \x1b[31m${error}\x1b[0m`);
   process.exit(1);
 }
 
