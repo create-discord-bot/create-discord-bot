@@ -152,8 +152,8 @@ try {
     if (args.l === "typescript") {
       object["devDependencies"] = {
         ...object["devDependencies"],
-        "@typescript-eslint/eslint-plugin": "^5.49.0",
-        "@typescript-eslint/parser": "^5.49.0",
+        "@typescript-eslint/eslint-plugin": "^5.50.0",
+        "@typescript-eslint/parser": "^5.50.0",
       };
     }
     object["devDependencies"]["eslint"] = "^8.33.0";
