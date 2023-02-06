@@ -218,10 +218,10 @@ const answer = await prompts(
   }
 );
 
-args.pm = answer.v;
+args.m = answer.v;
 
-if (args.pm !== "n") {
-  execSync(`cd ${directoryPath} && ${args.pm} install`, {
+if (args.m !== "n") {
+  execSync(`cd ${directoryPath} && ${args.m} install`, {
     stdio: [0, 1, 2],
   });
 } else {
