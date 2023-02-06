@@ -204,7 +204,7 @@ const toLog = [
 const answer = await prompts(
   {
     message: "Would you like to install dependencies now ?",
-    type: args.m ? (false as Falsy) : "select",
+    type: args.g ? (false as Falsy) : "select",
     name: "v",
     choices: [
       { title: "npm", value: "npm" },
@@ -218,10 +218,10 @@ const answer = await prompts(
   }
 );
 
-args.m = answer.v;
+args.g = answer.v;
 
-if (args.m !== "n") {
-  execSync(`cd ${directoryPath} && ${args.m} install`, {
+if (args.g !== "n") {
+  execSync(`cd ${directoryPath} && ${args.g} install`, {
     stdio: [0, 1, 2],
   });
 } else {
