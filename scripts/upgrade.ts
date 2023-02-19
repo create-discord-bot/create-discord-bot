@@ -1,4 +1,4 @@
-import { spawn } from "child_process";
+import { exec } from "child_process";
 
 const toCheck = [
   "./templates/javascript/default/package.json",
@@ -8,7 +8,5 @@ const toCheck = [
 ];
 
 toCheck.forEach((value) => {
-  spawn(`npx`, ["ncu", "-u", "--packageFile", value], {
-    stdio: "inherit",
-  });
+  exec(`npx ncu -u --packageFile ${value}`);
 });
