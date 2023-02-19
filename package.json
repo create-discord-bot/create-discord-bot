@@ -6,18 +6,18 @@
   "type": "module",
   "scripts": {
     "compile": "swc src -d dist --config-file .swcrc",
-    "clean": "rm -rf /Q /S dist",
+    "clean": "rmdir /Q /S dist",
     "start": "tsx src/index.ts",
-    "build": "npm run compile && tsx scripts/build.ts",
+    "build": "pnpm run compile && tsx scripts/build.ts",
     "upgrade": "tsx scripts/upgrade.ts",
     "test": "tsx tests/index.test.ts",
     "lint": "eslint ./ --max-warnings 0",
     "style": "prettier ./ --list-different",
-    "fix": "npm run lint -- --fix && prettier --write ./",
+    "fix": "pnpm run lint -- --fix && prettier --write ./",
     "check": "tsc --noEmit",
-    "patch": "npm version patch && npm run build && cd dist && npm publish && cd .. && git push --follow-tags && npm run clean",
-    "minor": "npm version minor && npm run build && cd dist && npm publish && cd .. && git push --follow-tags && npm run clean",
-    "major": "npm version major && npm run build && cd dist && npm publish && cd .. && git push --follow-tags && npm run clean"
+    "patch": "pnpm version patch && pnpm run build && cd dist && pnpm publish && cd .. && git push --follow-tags && pnpm run clean",
+    "minor": "pnpm version minor && pnpm run build && cd dist && pnpm publish && cd .. && git push --follow-tags && pnpm run clean",
+    "major": "pnpm version major && pnpm run build && cd dist && pnpm publish && cd .. && git push --follow-tags && pnpm run clean"
   },
   "repository": {
     "type": "git",
