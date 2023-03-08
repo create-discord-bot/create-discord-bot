@@ -7,12 +7,12 @@
     "start": "npx nodemon src/index.js | pino-pretty"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20",
-    "pino-pretty": "^9.3.0"
+    "nodemon": "^2.0.21",
+    "pino-pretty": "^9.4.0"
   },
   "dependencies": {
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
-    "pino": "^8.10.0"
+    "pino": "^8.11.0"
   }
 }
