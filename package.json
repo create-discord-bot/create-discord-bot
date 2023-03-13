@@ -11,6 +11,7 @@
     "build": "pnpm run compile && tsx scripts/build.ts",
     "upgrade": "tsx scripts/upgrade.ts",
     "test": "node --test --test-reporter spec",
+    "ci:test": "node --test",
     "lint": "eslint ./ --max-warnings 0",
     "style": "prettier ./ --list-different",
     "fix": "pnpm run lint -- --fix && prettier --write ./",
