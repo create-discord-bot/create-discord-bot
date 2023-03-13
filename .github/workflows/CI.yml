@@ -85,4 +85,4 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
       - run: pnpm i --frozen-lockfile
-      - run: npm ci:test
+      - run: npm run ci:test
