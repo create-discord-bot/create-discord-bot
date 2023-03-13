@@ -10,7 +10,7 @@
     "start": "tsx src/index.ts",
     "build": "pnpm run compile && tsx scripts/build.ts",
     "upgrade": "tsx scripts/upgrade.ts",
-    "test": "tsx tests/index.test.ts",
+    "test": "node --test --test-reporter spec",
     "lint": "eslint ./ --max-warnings 0",
     "style": "prettier ./ --list-different",
     "fix": "pnpm run lint -- --fix && prettier --write ./",
