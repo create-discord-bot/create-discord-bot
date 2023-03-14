@@ -2,10 +2,13 @@
 
 import prompts, { Falsy, PromptType } from "prompts";
 import larser from "larser";
-import { downloadTemplate } from "giget";
 import Spinner from "kisig";
 import { readFile, writeFile } from "fs/promises";
 import { execSync } from "child_process";
+
+const downloadTemplate = (url: string, dir: string) => {
+  const tarLink = `${url.replace(/\/tree.*$/gm, "")}/archive/main.tar.gz`;
+};
 
 console.clear();
 console.log("\x1b[1;34mcreate-discord-bot\x1b[0m");
