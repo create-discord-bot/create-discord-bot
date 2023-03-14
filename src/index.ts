@@ -111,30 +111,21 @@ console.clear();
 const spinner = new Spinner("Setting up your project...");
 
 try {
-  const base = `github:flzyy/create-discord-bot/templates/`;
+  const base = `https://github.com/create-discord-bot/create-discord-bot/tree/main/templates`;
 
   await Promise.all([
-    downloadTemplate(`${base}${args.l}/${args.o}`, {
-      dir: directoryPath,
-      force: true,
-    }),
+    downloadTemplate(`${base}${args.l}/${args.o}`, directoryPath),
     deployment.map((value) =>
-      downloadTemplate(`${base}${args.l}/${args.o}/${value}`, {
-        dir: `${directoryPath}/src/`,
-        force: true,
-      })
+      downloadTemplate(
+        `${base}${args.l}/${args.o}/${value}`,
+        `${directoryPath}/src/`
+      )
     ),
     eslint
-      ? downloadTemplate(`${base}eslint/${args.l}`, {
-          dir: directoryPath,
-          force: true,
-        })
+      ? downloadTemplate(`${base}eslint/${args.l}`, directoryPath)
       : Promise.resolve(),
     prettier
-      ? downloadTemplate(`${base}prettier`, {
-          dir: directoryPath,
-          force: true,
-        })
+      ? downloadTemplate(`${base}prettier`, directoryPath)
       : Promise.resolve(),
   ]);
 
