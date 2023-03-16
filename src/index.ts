@@ -9,7 +9,7 @@ import { existsSync } from "fs";
 import { mkdir } from "fs/promises";
 
 const base = `https://github.com/create-discord-bot/create-discord-bot/tree/main/templates`;
-const tarLink = `${base.replace(/\/tree.*$/gm, "")}/archive/main.tar.gz`;
+const tarLink = `${base.replace(/\/tree.*$/gm, "")}/archive/main.zip`;
 
 const downloadTemplate = (subfolder: string, dir: string) => {
   if (!existsSync(dir)) {
