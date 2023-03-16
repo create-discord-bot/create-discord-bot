@@ -5,9 +5,16 @@ import larser from "larser";
 import Spinner from "kisig";
 import { readFile, writeFile } from "fs/promises";
 import { execSync } from "child_process";
+import { existsSync } from "fs";
+import { mkdir } from "fs/promises";
 
-const downloadTemplate = (url: string, dir: string) => {
-  const tarLink = `${url.replace(/\/tree.*$/gm, "")}/archive/main.tar.gz`;
+const base = `https://github.com/create-discord-bot/create-discord-bot/tree/main/templates`;
+const tarLink = `${base.replace(/\/tree.*$/gm, "")}/archive/main.tar.gz`;
+
+const downloadTemplate = (subfolder: string, dir: string) => {
+  if (!existsSync(dir)) {
+    mkdir(dir, { recursive: true });
+  }
 };
 
 console.clear();
@@ -114,22 +121,15 @@ console.clear();
 const spinner = new Spinner("Setting up your project...");
 
 try {
-  const base = `https://github.com/create-discord-bot/create-discord-bot/tree/main/templates`;
-
   await Promise.all([
-    downloadTemplate(`${base}${args.l}/${args.o}`, directoryPath),
+    downloadTemplate(`${args.l}/${args.o}`, directoryPath),
     deployment.map((value) =>
-      downloadTemplate(
-        `${base}${args.l}/${args.o}/${value}`,
-        `${directoryPath}/src/`
-      )
+      downloadTemplate(`${args.l}/${args.o}/${value}`, `${directoryPath}/src/`)
     ),
     eslint
-      ? downloadTemplate(`${base}eslint/${args.l}`, directoryPath)
+      ? downloadTemplate(`eslint/${args.l}`, directoryPath)
       : Promise.resolve(),
-    prettier
-      ? downloadTemplate(`${base}prettier`, directoryPath)
-      : Promise.resolve(),
+    prettier ? downloadTemplate(`prettier`, directoryPath) : Promise.resolve(),
   ]);
 
   const data = await readFile(`${directoryPath}/package.json`, "utf-8");
