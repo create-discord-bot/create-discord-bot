@@ -5,16 +5,37 @@ import larser from "larser";
 import Spinner from "kisig";
 import { readFile, writeFile } from "fs/promises";
 import { execSync } from "child_process";
-import { existsSync } from "fs";
+import { createWriteStream, existsSync } from "fs";
 import { mkdir } from "fs/promises";
+import { homedir } from "os";
+import { join } from "path";
+import { pipeline } from "node:stream";
+import { promisify } from "node:util";
+import StreamZip from "node-stream-zip";
+import "node-fetch-native/polyfill";
+
+const streamPipeline = promisify(pipeline);
 
 const base = `https://github.com/create-discord-bot/create-discord-bot/tree/main/templates`;
+const tarZipLocation = `${join(
+  homedir(),
+  ".cache/create-discord-bot/main.zip"
+)}`;
 const tarLink = `${base.replace(/\/tree.*$/gm, "")}/archive/main.zip`;
 
-const downloadTemplate = (subfolder: string, dir: string) => {
+const downloadTemplate = async (subfolder: string, dir: string) => {
+  if (!existsSync(tarZipLocation)) {
+    // @ts-expect-error: res.body is valid but ts is weird so.
+    // prettier-ignore
+    await streamPipeline((await fetch(tarLink)).body, createWriteStream(tarZipLocation));
+  }
   if (!existsSync(dir)) {
     mkdir(dir, { recursive: true });
   }
+
+  const zip = new StreamZip.async({ file: tarZipLocation });
+  await zip.extract(`create-discord-bot-main/templates/${subfolder}`, dir);
+  await zip.close();
 };
 
 console.clear();
