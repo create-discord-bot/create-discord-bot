@@ -2,10 +2,41 @@
 
 import prompts, { Falsy, PromptType } from "prompts";
 import larser from "larser";
-import { downloadTemplate } from "giget";
 import Spinner from "kisig";
 import { readFile, writeFile } from "fs/promises";
 import { execSync } from "child_process";
+import { createWriteStream, existsSync } from "fs";
+import { mkdir } from "fs/promises";
+import { homedir } from "os";
+import { join } from "path";
+import { pipeline } from "node:stream";
+import { promisify } from "node:util";
+import StreamZip from "node-stream-zip";
+import "node-fetch-native/polyfill";
+
+const streamPipeline = promisify(pipeline);
+
+const base = `https://github.com/create-discord-bot/create-discord-bot/tree/main/templates`;
+const tarZipLocation = `${join(
+  homedir(),
+  ".cache/create-discord-bot/main.zip"
+)}`;
+const tarLink = `${base.replace(/\/tree.*$/gm, "")}/archive/main.zip`;
+
+const downloadTemplate = async (subfolder: string, dir: string) => {
+  if (!existsSync(dir)) {
+    mkdir(dir, { recursive: true });
+  }
+  if (!existsSync(tarZipLocation)) {
+    // @ts-expect-error: res.body is valid but ts is weird so.
+    // prettier-ignore
+    await streamPipeline((await fetch(tarLink)).body, createWriteStream(tarZipLocation));
+  }
+
+  const zip = new StreamZip.async({ file: tarZipLocation });
+  await zip.extract(`create-discord-bot-main/templates/${subfolder}`, dir);
+  await zip.close();
+};
 
 console.clear();
 console.log("\x1b[1;34mcreate-discord-bot\x1b[0m");
@@ -111,31 +142,15 @@ console.clear();
 const spinner = new Spinner("Setting up your project...");
 
 try {
-  const base = `github:flzyy/create-discord-bot/templates/`;
-
   await Promise.all([
-    downloadTemplate(`${base}${args.l}/${args.o}`, {
-      dir: directoryPath,
-      force: true,
-    }),
+    downloadTemplate(`${args.l}/${args.o}`, directoryPath),
     deployment.map((value) =>
-      downloadTemplate(`${base}${args.l}/${args.o}/${value}`, {
-        dir: `${directoryPath}/src/`,
-        force: true,
-      })
+      downloadTemplate(`${args.l}/${args.o}/${value}`, `${directoryPath}/src/`)
     ),
     eslint
-      ? downloadTemplate(`${base}eslint/${args.l}`, {
-          dir: directoryPath,
-          force: true,
-        })
+      ? downloadTemplate(`eslint/${args.l}`, directoryPath)
       : Promise.resolve(),
-    prettier
-      ? downloadTemplate(`${base}prettier`, {
-          dir: directoryPath,
-          force: true,
-        })
-      : Promise.resolve(),
+    prettier ? downloadTemplate(`prettier`, directoryPath) : Promise.resolve(),
   ]);
 
   const data = await readFile(`${directoryPath}/package.json`, "utf-8");
