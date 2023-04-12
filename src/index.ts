@@ -24,13 +24,13 @@ const tarZipLocation = `${join(
 const tarLink = `${base.replace(/\/tree.*$/gm, "")}/archive/main.zip`;
 
 const downloadTemplate = async (subfolder: string, dir: string) => {
+  if (!existsSync(dir)) {
+    mkdir(dir, { recursive: true });
+  }
   if (!existsSync(tarZipLocation)) {
     // @ts-expect-error: res.body is valid but ts is weird so.
     // prettier-ignore
     await streamPipeline((await fetch(tarLink)).body, createWriteStream(tarZipLocation));
-  }
-  if (!existsSync(dir)) {
-    mkdir(dir, { recursive: true });
   }
 
   const zip = new StreamZip.async({ file: tarZipLocation });
