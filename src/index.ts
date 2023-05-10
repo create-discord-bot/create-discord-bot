@@ -167,11 +167,11 @@ try {
     if (args.l === "typescript") {
       object["devDependencies"] = {
         ...object["devDependencies"],
-        "@typescript-eslint/eslint-plugin": "^5.54.1",
-        "@typescript-eslint/parser": "^5.54.1",
+        "@typescript-eslint/eslint-plugin": "^5.59.5",
+        "@typescript-eslint/parser": "^5.59.5",
       };
     }
-    object["devDependencies"]["eslint"] = "^8.35.0";
+    object["devDependencies"]["eslint"] = "^8.40.0";
   }
 
   if (prettier) {
@@ -187,7 +187,7 @@ try {
         JSON.stringify(object, null, "\t")
       );
     }
-    object["devDependencies"]["prettier"] = "^2.8.4";
+    object["devDependencies"]["prettier"] = "^2.8.8";
   }
 
   await Promise.all([

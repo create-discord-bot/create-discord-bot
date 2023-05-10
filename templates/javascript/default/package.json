@@ -7,10 +7,10 @@
     "start": "nodemon src/index.js"
   },
   "devDependencies": {
-    "nodemon": "^2.0.21"
+    "nodemon": "^2.0.22"
   },
   "dependencies": {
-    "discord.js": "^14.7.1",
+    "discord.js": "^14.11.0",
     "dotenv": "^16.0.3"
   }
 }
