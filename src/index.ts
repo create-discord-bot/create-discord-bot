@@ -167,11 +167,11 @@ try {
     if (args.l === "typescript") {
       object["devDependencies"] = {
         ...object["devDependencies"],
-        "@typescript-eslint/eslint-plugin": "^5.59.5",
-        "@typescript-eslint/parser": "^5.59.5",
+        "@typescript-eslint/eslint-plugin": "^5.61.0",
+        "@typescript-eslint/parser": "^5.61.0",
       };
     }
-    object["devDependencies"]["eslint"] = "^8.40.0";
+    object["devDependencies"]["eslint"] = "^8.44.0";
   }
 
   if (prettier) {
